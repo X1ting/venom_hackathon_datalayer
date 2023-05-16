@@ -8,9 +8,20 @@ module TransactionHelper
       unknown: "indigo",
       nft_mint: "blue",
       nft_transfer: "pink",
-      dex_swap: "green",
-      dex_staking: "red"
+      dex_swap: "emerald",
+      dex_staking: "sky"
     }[kind.to_sym]
+  end
+
+  def formatted_blockchain(transaction)
+    [transaction.blockchain, transaction.network].map(&:titleize).join(" ")
+  end
+
+  def blockchain_color(transaction)
+    {
+      venom: "emerald",
+      everscale: "blue",
+    }[transaction.blockchain.to_sym]
   end
 
 end

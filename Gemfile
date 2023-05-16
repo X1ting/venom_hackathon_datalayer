@@ -79,3 +79,5 @@ group :test do
   gem "webdrivers"
 end
 
+
+gem "kaminari", "~> 1.2"

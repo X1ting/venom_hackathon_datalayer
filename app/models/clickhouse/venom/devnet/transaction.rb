@@ -1,6 +1,6 @@
 module Clickhouse
   module Venom
-    module DevNet
+    module Devnet
       class Transaction < Clickhouse::ApplicationRecord
         self.table_name = 'venom_dev_transactions'
 
