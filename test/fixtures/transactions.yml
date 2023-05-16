@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tx_id: MyString
+  from: MyString
+  to: MyString
+  kind: 1
+
+two:
+  tx_id: MyString
+  from: MyString
+  to: MyString
+  kind: 1

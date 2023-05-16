@@ -1,0 +1,12 @@
+---
+:concurrency: 1
+production:
+  :concurrency: 10
+:queues:
+  - transactions
+
+:scheduler:
+  :schedule:
+    schedule_latest_transactions:
+      cron: '*/30 * * * * *'   # Runs once per minute # '0 */5 * * * *'
+      class: ScheduleLatestTransactionsJob

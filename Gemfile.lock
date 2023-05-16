@@ -1,3 +1,11 @@
+GIT
+  remote: git@github.com:trumenov/clickhouse-activerecord.git
+  revision: 2d2e8a39e9dbc2c88b084aa7d5e7606d17dd8690
+  specs:
+    clickhouse-activerecord (0.5.14)
+      activerecord (>= 5.2)
+      bundler (>= 1.13.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -82,12 +90,18 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     concurrent-ruby (1.2.2)
+    connection_pool (2.4.0)
     crass (1.0.6)
     date (3.3.3)
     debug (1.8.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     erubi (1.12.0)
+    et-orbi (1.2.7)
+      tzinfo
+    fugit (1.8.1)
+      et-orbi (~> 1, >= 1.2.7)
+      raabro (~> 1.4)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.13.0)
@@ -131,6 +145,7 @@ GEM
     public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
+    raabro (1.4.0)
     racc (1.6.2)
     rack (2.2.7)
     rack-test (2.1.0)
@@ -163,15 +178,28 @@ GEM
       zeitwerk (~> 2.5)
     rake (13.0.6)
     redis (4.8.1)
+    redis-client (0.14.1)
+      connection_pool
     regexp_parser (2.8.0)
     reline (0.3.3)
       io-console (~> 0.5)
     rexml (3.2.5)
     rubyzip (2.3.2)
+    rufus-scheduler (3.8.2)
+      fugit (~> 1.1, >= 1.1.6)
     selenium-webdriver (4.9.1)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sidekiq (7.1.0)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      rack (>= 2.2.4)
+      redis-client (>= 0.14.0)
+    sidekiq-scheduler (5.0.2)
+      rufus-scheduler (~> 3.2)
+      sidekiq (>= 6, < 8)
+      tilt (>= 1.4.0)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -184,6 +212,7 @@ GEM
     tailwindcss-rails (2.0.29-x86_64-darwin)
       railties (>= 6.0.0)
     thor (1.2.2)
+    tilt (2.1.0)
     timeout (0.3.2)
     turbo-rails (1.4.0)
       actionpack (>= 6.0.0)
@@ -214,6 +243,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   capybara
+  clickhouse-activerecord!
   debug
   importmap-rails
   jbuilder
@@ -222,6 +252,8 @@ DEPENDENCIES
   rails (~> 7.0.4, >= 7.0.4.3)
   redis (~> 4.0)
   selenium-webdriver
+  sidekiq
+  sidekiq-scheduler (~> 5.0)
   sprockets-rails
   stimulus-rails
   tailwindcss-rails
