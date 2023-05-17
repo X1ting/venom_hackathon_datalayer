@@ -6,13 +6,13 @@ class ScheduleLatestTransactionsJob < ApplicationJob
     Clickhouse::Venom::Devnet::Transaction
       .where('now >= ?', BUFFER_TIME.ago)
       .pluck(:id)
-      .in_groups_of(10) do |batch|
+      .in_groups_of(50) do |batch|
         Venom::ProcessTransactionJob.perform_later(batch.compact)
       end
     Clickhouse::Everscale::Mainnet::Transaction
       .where('now >= ?', BUFFER_TIME.ago)
       .pluck(:id)
-      .in_groups_of(10) do |batch|
+      .in_groups_of(50) do |batch|
         Everscale::ProcessTransactionJob.perform_later(batch.compact)
       end
   end
