@@ -84,5 +84,5 @@ production:
   postgresql:
     <<: *default
     database: data_layer_production
-    username: data_layer
-    password: <%= ENV["DATA_LAYER_DATABASE_PASSWORD"] %>
+    username: <%= Rails.application.credentials.postgresql.username %>
+    password: <%= Rails.application.credentials.postgresql.password %>

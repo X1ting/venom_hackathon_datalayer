@@ -1,4 +1,5 @@
-server 'datalayer.xiting.me', user: 'deploy', roles: %w{app db web}
+server '65.108.54.50', user: 'deploy', roles: %w{app db web}
+# server 'datalayer.xiting.me', user: 'deploy', roles: %w{app db web}
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
