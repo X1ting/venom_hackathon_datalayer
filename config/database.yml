@@ -9,14 +9,15 @@ default: &default
 clickhouse_default: &clickhouse_default
   database: default
   adapter: clickhouse
-  host: <%= Rails.application.credentials.clickhouse.host %>
   port: 8123
-  username: <%= Rails.application.credentials.clickhouse.username %>
-  password: <%= Rails.application.credentials.clickhouse.password %>
+  host: <%= Rails.application.credentials[Rails.env.to_sym][:clickhouse][:host] %>
+  username: <%= Rails.application.credentials[Rails.env.to_sym][:clickhouse][:username] %>
+  password: <%= Rails.application.credentials[Rails.env.to_sym][:clickhouse][:password] %>
 
 development:
   clickhouse:
     <<: *clickhouse_default
+
   postgresql:
     <<: *default
     database: data_layer_development
@@ -84,5 +85,5 @@ production:
   postgresql:
     <<: *default
     database: data_layer_production
-    username: <%= Rails.application.credentials.postgresql.username %>
-    password: <%= Rails.application.credentials.postgresql.password %>
+    # username: <%= Rails.application.credentials.postgresql.username %>
+    # password: <%= Rails.application.credentials.postgresql.password %>

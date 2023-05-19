@@ -4,9 +4,12 @@ production:
   :concurrency: 3
 :queues:
   - transactions
-
+  - accounts
 :scheduler:
   :schedule:
     schedule_latest_transactions:
       cron: '*/30 * * * * *'   # Runs once per minute # '0 */5 * * * *'
       class: ScheduleLatestTransactionsJob
+    schedule_latest_accounts:
+      cron: '*/30 * * * * *'   # Runs once per minute # '0 */5 * * * *'
+      class: ScheduleLatestAccountsJob

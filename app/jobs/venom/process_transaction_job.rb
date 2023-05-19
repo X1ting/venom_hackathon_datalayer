@@ -3,7 +3,7 @@ module Venom
     queue_as :transactions
 
     def perform(tx_ids)
-      ch_transactions = Clickhouse::Venom::Devnet::Transaction.find(tx_ids)
+      ch_transactions = Clickhouse::Venom::Devnet::Transaction.where(id: tx_ids)
       existing_pg_transactions_ids = Transaction.venom.devnet.where(tx_id: tx_ids).pluck(:tx_id)
       ch_transactions.each do |ch_transaction|
         next if existing_pg_transactions_ids.include?(ch_transaction.id)

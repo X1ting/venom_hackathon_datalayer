@@ -1,13 +1,9 @@
-class Transaction < PostgresqlRecord
-  paginates_per 20
-
+class Account < ApplicationRecord
   enum kind: {
     unknown: 0,
-    nft_mint: 1,
-    nft_transfer: 2,
-    dex_swap: 3,
-    dex_staking: 4,
-    devnet_drop: 5
+    nft: 1,
+    collection: 2,
+    wallet: 3
   }
 
   enum blockchain: {
@@ -18,6 +14,11 @@ class Transaction < PostgresqlRecord
   enum network: {
     devnet: 0,
     mainnet: 1
+  }
+
+  enum base_currency: {
+    venom_coin: 0,
+    ever_coin: 1
   }
 
   def formatted_kind
