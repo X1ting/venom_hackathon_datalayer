@@ -7,7 +7,7 @@ module Venom
       address_ids.each do |address_id|
         next if existing_pg_accounts_ids.include?(address_id)
 
-        Account.create!(
+        account = Account.create!(
           address: address_id,
           blockchain: :venom,
           network: :devnet,
