@@ -1,0 +1,22 @@
+<div>
+  <h3>Account: <%= @account.address %> of <%= formatted_blockchain(@account) %></h3>
+
+  Balances:
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @ch_balances.each do |balance| %>
+        <tr>
+          <td><%= balance.created_at_local %></td>
+          <td><%= balance.balance_dec %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

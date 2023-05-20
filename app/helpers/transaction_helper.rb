@@ -13,8 +13,8 @@ module TransactionHelper
     }[kind.to_sym]
   end
 
-  def formatted_blockchain(transaction)
-    [transaction.blockchain, transaction.network].map(&:titleize).join(" ")
+  def formatted_blockchain(model)
+    [model.blockchain, model.network].map(&:titleize).join(" ")
   end
 
   def blockchain_color(transaction)
