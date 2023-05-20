@@ -17,11 +17,22 @@ module TransactionHelper
     [model.blockchain, model.network].map(&:titleize).join(" ")
   end
 
-  def blockchain_color(transaction)
+  def blockchain_color(model)
     {
       venom: "emerald",
       everscale: "blue",
-    }[transaction.blockchain.to_sym]
+    }[model.blockchain.to_sym]
+  end
+
+  def format_currency(coin)
+    {
+      venom_coin: "VENOM",
+      ever_coin: "EVER"
+    }[coin.to_sym]
+  end
+
+  def format_amount(amount)
+    amount.to_f / 1000000000
   end
 
 end

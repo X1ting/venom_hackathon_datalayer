@@ -4,7 +4,7 @@ class AccountsController < ApplicationController
   end
 
   def show
-    @account = Account.find_by(address: params[:id])
+    @account = Account.find(params[:id])
     @ch_balances = @account.ch_accounts.select(:created_at_local, :balance_dec).order(created_at_local: :desc).last(100)
   end
 end
