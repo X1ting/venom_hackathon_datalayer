@@ -12,4 +12,6 @@ Rails.application.routes.draw do
   root "transactions#index"
 
   resources :accounts, only: [:index, :show]
+
+  get '/search', to: 'search#search'
 end
