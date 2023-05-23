@@ -1,7 +1,7 @@
 class InsightsController < ApplicationController
   def index
     @transactions = Transaction.where(created_at: 1.day.ago..)
-    @transaction_insights = [
+    @transactions_insights = [
       {
         name: 'Venom',
         data: @transactions.venom.devnet.group_by_minute(:created_at, n: 5).count
