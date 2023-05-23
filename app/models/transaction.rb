@@ -20,8 +20,10 @@ class Transaction < PostgresqlRecord
     mainnet: 1
   }
 
+  scope :nft, -> { where(kind: [kinds[:nft_mint], kinds[:nft_transfer]])}
+  scope :dex, -> { where(kind: [kinds[:dex_staking], kinds[:dex_swap]])}
+
   def formatted_kind
     kind.to_s.titleize
   end
-
 end

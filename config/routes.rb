@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   root "transactions#index"
 
   resources :accounts, only: [:index, :show]
+  resources :insights, only: :index
 
   get '/search', to: 'search#search'
+
 end
