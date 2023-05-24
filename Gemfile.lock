@@ -6,12 +6,6 @@ GIT
       activerecord (>= 5.2)
       bundler (>= 1.13.4)
 
-PATH
-  remote: ../../forks/groupdate
-  specs:
-    groupdate (6.2.1)
-      activesupport (>= 5.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -134,6 +128,8 @@ GEM
       raabro (~> 1.4)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    groupdate (6.2.1)
+      activesupport (>= 5.2)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -306,7 +302,7 @@ DEPENDENCIES
   chartkick
   clickhouse-activerecord!
   debug
-  groupdate!
+  groupdate
   httparty
   importmap-rails
   jbuilder

@@ -62,7 +62,7 @@ gem 'pry'
 
 gem "chartkick"
 
-gem "groupdate", path: '../../forks/groupdate'
+gem "groupdate"
 
 
 group :development, :test do
