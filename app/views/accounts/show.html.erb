@@ -1,21 +1,6 @@
 <div>
   <h3>Account: <%= @account.address %> of <%= formatted_blockchain(@account) %></h3>
 
-  Balances:
-  <table>
-    <thead>
-      <tr>
-        <th>Time</th>
-        <th>Balance, <%= format_currency(@account.base_currency) %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @ch_balances.each do |balance| %>
-        <tr>
-          <td><%= balance.created_at_local %></td>
-          <td><%= format_amount(balance.balance_dec) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  Balance:
+  <%= line_chart @balance %>
 </div>
