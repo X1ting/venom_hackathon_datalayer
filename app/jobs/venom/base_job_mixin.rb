@@ -19,5 +19,9 @@ module Venom
     def retrieve_account_state_job
       Venom::RetrieveAccountStateJob
     end
+
+    def ch_module
+      Clickhouse::Venom::Devnet
+    end
   end
 end

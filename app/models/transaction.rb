@@ -3,11 +3,8 @@ class Transaction < PostgresqlRecord
 
   enum kind: {
     unknown: 0,
-    nft_mint: 1,
-    nft_transfer: 2,
-    dex_swap: 3,
-    dex_staking: 4,
-    devnet_drop: 5
+    devnet_drop: 1,
+    funds_transfer: 2
   }
 
   enum blockchain: {

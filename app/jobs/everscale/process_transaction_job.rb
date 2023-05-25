@@ -13,10 +13,12 @@ module Everscale
           from: ch_transaction.account_addr,
           to: ch_transaction.account_addr,
           time: ch_transaction.now,
-          kind: Transaction.kinds.values.sample,
+          kind: Transaction.kinds[:unknown],
           blockchain: :everscale,
           network: :mainnet
         )
+
+        TransactionCategorizerJob.perform_later(transaction.id)
       end
     end
   end

@@ -8,15 +8,17 @@ module Venom
       ch_transactions.each do |ch_transaction|
         next if existing_pg_transactions_ids.include?(ch_transaction.id)
 
-        Transaction.create!(
+        transaction = Transaction.create!(
           tx_id: ch_transaction.id,
           from: ch_transaction.account_addr,
           to: ch_transaction.account_addr,
           time: ch_transaction.now,
-          kind: Transaction.kinds.values.sample,
+          kind: Transaction.kinds[:unknown],
           blockchain: :venom,
           network: :devnet
         )
+
+        TransactionCategorizerJob.perform_later(transaction.id)
       end
     end
   end

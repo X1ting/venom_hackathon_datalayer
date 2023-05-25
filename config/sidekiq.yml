@@ -3,8 +3,9 @@
 production:
   :concurrency: 3
 :queues:
-  - transactions
-  - accounts
+  - [transactions, 2]
+  - [accounts, 2]
+  - [transaction_categorizer, 1]
 :scheduler:
   :schedule:
     schedule_latest_transactions:

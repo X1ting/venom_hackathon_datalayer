@@ -14,6 +14,12 @@ class AccountsController < ApplicationController
       .order(created_at_local: :desc)
       .last(100)
       .reduce({}) {|acc, i|  acc[i.created_at_local] = format_amount(i.balance_dec); acc }
+    # @balance = @account.ch_accounts
+    #   .select('toStartOfFifteenMinutes(created_at_local) as created_at, avg(balance_dec::int) as avg_balance')
+    #   .group('toStartOfFifteenMinutes(created_at_local) as created_at')
+    #   .order(created_at: :desc)
+    #   .limit(1000).to_a
+    #   .reduce({}) {|acc, i|  acc[i.created_at] = format_amount(i.avg_balance); acc }
   end
 
   def filter_params
