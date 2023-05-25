@@ -8,7 +8,7 @@ module Everscale
       ch_transactions.each do |ch_transaction|
         next if existing_pg_transactions_ids.include?(ch_transaction.id)
 
-        Transaction.create!(
+        transaction = Transaction.create!(
           tx_id: ch_transaction.id,
           from: ch_transaction.account_addr,
           to: ch_transaction.account_addr,
