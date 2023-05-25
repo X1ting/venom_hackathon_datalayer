@@ -11,12 +11,12 @@ class InsightsController < ApplicationController
         data: @transactions.everscale.mainnet.group_by_minute(:created_at, n: 5).count
       },
       {
-        name: 'NFT',
-        data: @transactions.nft.group_by_minute(:created_at, n: 5).count
+        name: 'Devnet Drop',
+        data: @transactions.devnet_drop.group_by_minute(:created_at, n: 5).count
       },
       {
-        name: 'DEX',
-        data: @transactions.dex.group_by_minute(:created_at, n: 5).count
+        name: 'Funds Transfer',
+        data: @transactions.funds_transfer.group_by_minute(:created_at, n: 5).count
       }
     ]
 
