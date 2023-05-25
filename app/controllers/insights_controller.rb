@@ -1,6 +1,11 @@
 class InsightsController < ApplicationController
   def index
-    @transactions = Transaction.where(created_at: 1.day.ago..)
+    if params[:since]
+      since = Date.parse(params[:since])
+      @transactions = Transaction.where(created_at: since..)
+    else
+      @transactions = Transaction.where(created_at: 1.day.ago..)
+    end
     @transactions_insights = [
       {
         name: 'Venom',
@@ -20,7 +25,13 @@ class InsightsController < ApplicationController
       }
     ]
 
-    @accounts = Account.where(created_at: 1.day.ago..)
+    if params[:since]
+      since = Date.parse(params[:since])
+      @accounts = Account.where(created_at: since..)
+    else
+      @accounts = Account.where(created_at: 1.day.ago..)
+    end
+
     @accounts_insights = [
       {
         name: 'Venom',

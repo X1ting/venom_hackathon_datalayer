@@ -6,10 +6,8 @@ module TransactionHelper
   def kind_tag_color(kind)
     {
       unknown: "indigo",
-      nft_mint: "blue",
-      nft_transfer: "pink",
-      dex_swap: "emerald",
-      dex_staking: "sky"
+      devnet_drop: "emerald",
+      funds_transfer: "pink"
     }[kind.to_sym]
   end
 
