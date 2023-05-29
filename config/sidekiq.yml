@@ -6,6 +6,7 @@ production:
   - [transactions, 2]
   - [accounts, 2]
   - [transaction_categorizer, 1]
+  - [messages, 1]
 :scheduler:
   :schedule:
     schedule_latest_transactions:

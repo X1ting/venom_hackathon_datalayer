@@ -120,9 +120,14 @@ GEM
     debug (1.8.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
+    dotenv (2.7.6)
     erubi (1.12.0)
     et-orbi (1.2.7)
       tzinfo
+    everscale-client-ruby (1.1.68)
+      dotenv (~> 2.7.6)
+      ffi (~> 1.15)
+    ffi (1.15.5)
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
@@ -302,6 +307,7 @@ DEPENDENCIES
   chartkick
   clickhouse-activerecord!
   debug
+  everscale-client-ruby
   groupdate
   httparty
   importmap-rails

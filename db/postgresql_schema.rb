@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_19_202450) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_29_194056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -26,6 +26,42 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_19_202450) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["address"], name: "index_accounts_on_address"
+  end
+
+  create_table "contracts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "project_link"
+    t.string "tvc"
+    t.string "code_hash"
+    t.string "compiler_version"
+    t.string "linker_version"
+    t.integer "blockchain"
+    t.integer "network"
+    t.json "abi"
+    t.json "sources"
+    t.string "uploaded_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code_hash"], name: "index_contracts_on_code_hash"
+    t.index ["name"], name: "index_contracts_on_name"
+  end
+
+  create_table "decoded_messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "blockchain"
+    t.integer "network"
+    t.string "ext_id"
+    t.string "src"
+    t.string "dst"
+    t.string "body_type"
+    t.string "name"
+    t.json "value"
+    t.json "header"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dst"], name: "index_decoded_messages_on_dst"
+    t.index ["ext_id"], name: "index_decoded_messages_on_ext_id"
+    t.index ["name"], name: "index_decoded_messages_on_name"
+    t.index ["src"], name: "index_decoded_messages_on_src"
   end
 
   create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

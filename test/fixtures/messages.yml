@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  blockchain: 1
+  network: 1
+  ext_id: MyString
+  src: MyString
+  dst: MyString
+  body_type: MyString
+  name: MyString
+
+two:
+  blockchain: 1
+  network: 1
+  ext_id: MyString
+  src: MyString
+  dst: MyString
+  body_type: MyString
+  name: MyString

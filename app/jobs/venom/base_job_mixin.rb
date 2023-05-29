@@ -4,6 +4,10 @@ module Venom
       Account.venom.devnet
     end
 
+    def contract_base
+      Contract.venom.devnet
+    end
+
     def blockchain
       :venom
     end
@@ -22,6 +26,10 @@ module Venom
 
     def ch_module
       Clickhouse::Venom::Devnet
+    end
+
+    def rpc_host
+      Rails.application.credentials[Rails.env.to_sym][:venom][:devnet][:host]
     end
   end
 end

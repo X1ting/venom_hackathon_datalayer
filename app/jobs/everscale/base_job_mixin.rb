@@ -4,6 +4,10 @@ module Everscale
       Account.everscale.mainnet
     end
 
+    def contract_base
+      Contract.everscale.mainnet
+    end
+
     def blockchain
       :everscale
     end
@@ -22,6 +26,10 @@ module Everscale
 
     def ch_module
       Clickhouse::Everscale::Mainnet
+    end
+
+    def rpc_host
+      Rails.application.credentials[Rails.env.to_sym][:everscale][:mainnet][:host]
     end
   end
 end
