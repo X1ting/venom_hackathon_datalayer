@@ -65,6 +65,6 @@ class ContractsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def contract_params
-      params.fetch(:contract, {})
+      params.require(:contract).permit(:contract_name, :project_link, :tvc, :code_hash, :compiler_version, :linker_version, :blockchain, :network, :abi, :sources)
     end
 end

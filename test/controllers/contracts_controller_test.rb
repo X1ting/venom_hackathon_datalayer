@@ -17,7 +17,7 @@ class ContractsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create contract" do
     assert_difference("Contract.count") do
-      post contracts_url, params: { contract: {  } }
+      post contracts_url, params: { contract: { blockchain: @contract.blockchain, code_hash: @contract.code_hash, compiler_version: @contract.compiler_version, contract_name: @contract.contract_name, linker_version: @contract.linker_version, network: @contract.network, project_link: @contract.project_link, tvc: @contract.tvc } }
     end
 
     assert_redirected_to contract_url(Contract.last)
@@ -34,7 +34,7 @@ class ContractsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update contract" do
-    patch contract_url(@contract), params: { contract: {  } }
+    patch contract_url(@contract), params: { contract: { blockchain: @contract.blockchain, code_hash: @contract.code_hash, compiler_version: @contract.compiler_version, contract_name: @contract.contract_name, linker_version: @contract.linker_version, network: @contract.network, project_link: @contract.project_link, tvc: @contract.tvc } }
     assert_redirected_to contract_url(@contract)
   end
 

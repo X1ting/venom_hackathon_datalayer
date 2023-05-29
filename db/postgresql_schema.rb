@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_29_194056) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_29_211729) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -58,6 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_29_194056) do
     t.json "header"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "contract_uuid"
     t.index ["dst"], name: "index_decoded_messages_on_dst"
     t.index ["ext_id"], name: "index_decoded_messages_on_ext_id"
     t.index ["name"], name: "index_decoded_messages_on_name"

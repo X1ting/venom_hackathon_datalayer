@@ -14,6 +14,14 @@ class ContractsTest < ApplicationSystemTestCase
     visit contracts_url
     click_on "New contract"
 
+    fill_in "Blockchain", with: @contract.blockchain
+    fill_in "Code hash", with: @contract.code_hash
+    fill_in "Compiler version", with: @contract.compiler_version
+    fill_in "Contract name", with: @contract.contract_name
+    fill_in "Linker version", with: @contract.linker_version
+    fill_in "Network", with: @contract.network
+    fill_in "Project link", with: @contract.project_link
+    fill_in "Tvc", with: @contract.tvc
     click_on "Create Contract"
 
     assert_text "Contract was successfully created"
@@ -24,6 +32,14 @@ class ContractsTest < ApplicationSystemTestCase
     visit contract_url(@contract)
     click_on "Edit this contract", match: :first
 
+    fill_in "Blockchain", with: @contract.blockchain
+    fill_in "Code hash", with: @contract.code_hash
+    fill_in "Compiler version", with: @contract.compiler_version
+    fill_in "Contract name", with: @contract.contract_name
+    fill_in "Linker version", with: @contract.linker_version
+    fill_in "Network", with: @contract.network
+    fill_in "Project link", with: @contract.project_link
+    fill_in "Tvc", with: @contract.tvc
     click_on "Update Contract"
 
     assert_text "Contract was successfully updated"

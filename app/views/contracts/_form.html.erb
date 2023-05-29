@@ -11,6 +11,56 @@
     </div>
   <% end %>
 
+  <div class="my-5">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :project_link %>
+    <%= form.text_field :project_link, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :tvc %>
+    <%= form.text_field :tvc, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :code_hash %>
+    <%= form.text_field :code_hash, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :compiler_version %>
+    <%= form.text_field :compiler_version, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :linker_version %>
+    <%= form.text_field :linker_version, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :blockchain %>
+    <%= form.select :blockchain, options_for_select(Contract.blockchains.map {|key, value| [key.titleize, Contract.blockchains.key(value)]}, contract.blockchain) %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :network %>
+    <%= form.select :network, options_for_select(Contract.networks.map {|key, value| [key.titleize, Contract.networks.key(value)]}, contract.network) %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :abi %>
+    <%= form.text_field :abi, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :sources %>
+    <%= form.text_field :sources, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
   <div class="inline">
     <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>

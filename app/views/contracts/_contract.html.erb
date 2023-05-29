@@ -1,4 +1,44 @@
 <div id="<%= dom_id contract %>">
+  <p class="my-5">
+    <strong class="block font-medium mb-1">name:</strong>
+    <%= contract.name %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Project link:</strong>
+    <%= contract.project_link %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Tvc:</strong>
+    <%= contract.tvc %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Code hash:</strong>
+    <%= contract.code_hash %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Compiler version:</strong>
+    <%= contract.compiler_version %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Linker version:</strong>
+    <%= contract.linker_version %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Blockchain:</strong>
+    <%= contract.blockchain %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Network:</strong>
+    <%= contract.network %>
+  </p>
+
   <% if action_name != "show" %>
     <%= link_to "Show this contract", contract, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     <%= link_to 'Edit this contract', edit_contract_path(contract), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
