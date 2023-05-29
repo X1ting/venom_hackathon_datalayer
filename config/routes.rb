@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :accounts, only: [:index, :show]
   resources :insights, only: :index
+  resources :contracts
 
   get '/search', to: 'search#search'
 

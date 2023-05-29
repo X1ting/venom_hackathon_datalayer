@@ -40,6 +40,7 @@ class DecodeMessagesJobBase < ApplicationJob
           name: result[:result]["name"],
           value: result[:result]["value"],
           header: result[:result]["header"],
+          contract_uuid: contract.id,
         )
       end
 
