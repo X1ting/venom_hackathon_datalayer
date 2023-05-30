@@ -24,9 +24,10 @@
               </div>
               <divret class="hidden sm:ml-6 sm:block">
                 <div class="flex space-x-4">
+                  <%= link_to('Insights', insights_path, class: nav_icon_class(insights_path)) %>
                   <%= link_to('Transactions', root_path, class: nav_icon_class(root_path)) %>
                   <%= link_to('Accounts', accounts_path, class: nav_icon_class(accounts_path)) %>
-                  <%= link_to('Insights', insights_path, class: nav_icon_class(insights_path)) %>
+                  <%= link_to('Contracts', contracts_path, class: nav_icon_class(contracts_path)) %>
                 </div>
               </div>
               <div class="flex space-x-4">
@@ -39,15 +40,6 @@
                   <%= form.submit "Search", class: 'md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 mr-1' %>
                 <% end %>
               </div>
-          </div>
-        </div>
-
-        <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="sm:hidden" id="mobile-menu">
-          <div class="space-y-1 px-2 pb-3 pt-2">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <%= link_to('Transactions', root_path, class: 'bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium') %>
-            <%= link_to('Accounts', accounts_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium') %>
           </div>
         </div>
       </nav>

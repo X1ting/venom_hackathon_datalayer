@@ -3,7 +3,13 @@ class ContractsController < ApplicationController
 
   # GET /contracts or /contracts.json
   def index
-    @contracts = Contract.all
+    scope = Contract.all
+    @contracts = scope
+      .left_joins(:decoded_messages)
+      .select('contracts.*, coalesce(count(decoded_messages.contract_uuid), 0) as messages_count')
+      .group('contracts.id')
+      .order(messages_count: :desc)
+      .page(params[:page])
   end
 
   # GET /contracts/1 or /contracts/1.json
@@ -34,28 +40,28 @@ class ContractsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /contracts/1 or /contracts/1.json
-  def update
-    respond_to do |format|
-      if @contract.update(contract_params)
-        format.html { redirect_to contract_url(@contract), notice: "Contract was successfully updated." }
-        format.json { render :show, status: :ok, location: @contract }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @contract.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  # # PATCH/PUT /contracts/1 or /contracts/1.json
+  # def update
+  #   respond_to do |format|
+  #     if @contract.update(contract_params)
+  #       format.html { redirect_to contract_url(@contract), notice: "Contract was successfully updated." }
+  #       format.json { render :show, status: :ok, location: @contract }
+  #     else
+  #       format.html { render :edit, status: :unprocessable_entity }
+  #       format.json { render json: @contract.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
-  # DELETE /contracts/1 or /contracts/1.json
-  def destroy
-    @contract.destroy
+  # # DELETE /contracts/1 or /contracts/1.json
+  # def destroy
+  #   @contract.destroy
 
-    respond_to do |format|
-      format.html { redirect_to contracts_url, notice: "Contract was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
+  #   respond_to do |format|
+  #     format.html { redirect_to contracts_url, notice: "Contract was successfully destroyed." }
+  #     format.json { head :no_content }
+  #   end
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.

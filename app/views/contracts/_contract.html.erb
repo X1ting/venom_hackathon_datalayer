@@ -1,43 +1,61 @@
 <div id="<%= dom_id contract %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">name:</strong>
-    <%= contract.name %>
-  </p>
+  <% if contract.name %>
+    <p class="m-5 flex space-between gap-1">
+      <strong class="block font-medium mb-1">Name:</strong>
+      <%= contract.name %>
+    </p>
+  <% end %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Project link:</strong>
-    <%= contract.project_link %>
-  </p>
+  <% if contract.project_link %>
+    <p class="m-5 flex space-between gap-1">
+      <strong class="block font-medium mb-1">Project link:</strong>
+      <%= contract.project_link %>
+    </p>
+  <% end %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Tvc:</strong>
-    <%= contract.tvc %>
-  </p>
+  <% if contract.tvc %>
+    <p class="m-5 flex space-between gap-1">
+      <strong class="block font-medium mb-1">Tvc:</strong>
+      <%= contract.tvc %>
+    </p>
+  <% end %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Code hash:</strong>
-    <%= contract.code_hash %>
-  </p>
+  <% if contract.code_hash %>
+    <p class="m-5 flex space-between gap-1">
+      <strong class="block font-medium mb-1">Code hash:</strong>
+      <%= contract.code_hash %>
+    </p>
+  <% end %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Compiler version:</strong>
-    <%= contract.compiler_version %>
-  </p>
+  <% if contract.compiler_version %>
+    <p class="m-5 flex space-between gap-1">
+      <strong class="block font-medium mb-1">Compiler version:</strong>
+      <%= contract.compiler_version %>
+    </p>
+  <% end %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Linker version:</strong>
-    <%= contract.linker_version %>
-  </p>
+  <% if contract.linker_version %>
+    <p class="m-5 flex space-between gap-1">
+      <strong class="block font-medium mb-1">Linker version:</strong>
+      <%= contract.linker_version %>
+    </p>
+  <% end %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Blockchain:</strong>
-    <%= contract.blockchain %>
-  </p>
+  <% if contract.blockchain %>
+    <p class="m-5 flex space-between gap-1">
+      <strong class="block font-medium mb-1">Blockchain:</strong>
+      <%= formatted_blockchain(contract) %>
+    </p>
+  <% end %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Network:</strong>
-    <%= contract.network %>
-  </p>
+    <div class="m-5" x-data="{ open: false }">
+      <button class="rounded-lg py-3 px-5 bg-gray-100 font-medium" x-on:click="open = ! open">Show/Close ABI</button>
+      <pre x-show="open">
+<%= JSON.pretty_generate(contract.abi) %>
+      </pre>
+    </div>
+  <div >
+</div>
 
   <% if action_name != "show" %>
     <%= link_to "Show this contract", contract, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>

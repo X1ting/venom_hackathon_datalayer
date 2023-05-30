@@ -1,4 +1,5 @@
 class Contract < ApplicationRecord
+  paginates_per 20
   before_create :validate_abi
   before_save :validate_abi
   enum blockchain: {
@@ -10,6 +11,8 @@ class Contract < ApplicationRecord
     devnet: 0,
     mainnet: 1
   }
+
+  has_many :decoded_messages, foreign_key: :contract_uuid
 
   def validate_abi
     self.abi = JSON.parse(self.abi) unless self.abi.is_a?(Hash)
