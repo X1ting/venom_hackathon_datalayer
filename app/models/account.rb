@@ -42,6 +42,10 @@ class Account < ApplicationRecord
   end
 
   def decoded_messages
-    DecodedMessage.where(src: self.address).or(DecodedMessage.where(dst: self.address))
+    DecodedMessage.where(src: self.address).or(DecodedMessage.where(dst: self.address)).left_joins(:contract)
+      .joins("LEFT OUTER JOIN accounts as source_accounts ON source_accounts.address = decoded_messages.src")
+      .joins("LEFT OUTER JOIN accounts as destination_accounts ON destination_accounts.address = decoded_messages.dst")
+      .select('decoded_messages.*, destination_accounts.id as dst_id, source_accounts.id as src_id')
+      .order(:ext_created_at)
   end
 end
