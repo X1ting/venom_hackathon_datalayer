@@ -1,7 +1,7 @@
 class DecodeMessagesJobBase < ApplicationJob
   queue_as :messages
 
-  def perform(contract_id, try_to_decode_all: false)
+  def perform(contract_ids: nil, try_to_decode_all: false, message_ids: nil)
     contract = contract_base.find(contract_id)
 
     if try_to_decode_all
@@ -9,6 +9,10 @@ class DecodeMessagesJobBase < ApplicationJob
     else
       account_addresses = ch_module::Account.where(code_hash: contract.code_hash).select('distinct(id)')
       messages_scope = ch_module::Message.where(src: account_addresses).or(ch_module::Message.where(dst: account_addresses))
+    end
+
+    if message_ids
+      messages_scope = messages_scope.where(id: message_ids)
     end
 
     messages_count = messages_scope.count

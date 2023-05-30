@@ -41,4 +41,7 @@ class Account < ApplicationRecord
     end
   end
 
+  def decoded_messages
+    DecodedMessage.where(src: self.address).or(DecodedMessage.where(dst: self.address))
+  end
 end
