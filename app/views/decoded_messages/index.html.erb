@@ -56,10 +56,10 @@
                         <h2 class="text-sm font-normal text-black-500"><%= decoded_message.name %></h2>
                       </td>
                       <td class="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                        <h2 class="text-sm font-normal text-black-500"><%= decoded_message.src_id ? link_to(decoded_message.src, account_path(decoded_message.src_id)) : decoded_message.src %></h2>
+                        <h2 class="text-sm font-normal text-black-500"><%= decoded_message.src_id ? link_to(truncate_addr(decoded_message.src), account_path(decoded_message.src_id)) : truncate_addr(decoded_message.src) %></h2>
                       </td>
                       <td class="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                        <h2 class="text-sm font-normal text-black-500"><%= decoded_message.dst_id ? link_to(decoded_message.dst, account_path(decoded_message.dst_id)) : decoded_message.dst %></h2>
+                        <h2 class="text-sm font-normal text-black-500"><%= decoded_message.dst_id ? link_to(truncate_addr(decoded_message.dst), account_path(decoded_message.dst_id)) : truncate_addr(decoded_message.dst) %></h2>
                       </td>
                       <td class="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                         <h2 class="text-sm font-normal text-black-500"><%= link_to(format_contract_name(decoded_message.contract.name), contract_path(decoded_message.contract)) %></h2>

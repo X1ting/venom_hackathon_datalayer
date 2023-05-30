@@ -9,9 +9,12 @@ production:
   - [messages, 1]
 :scheduler:
   :schedule:
-    schedule_latest_transactions:
-      cron: '*/30 * * * * *'   # Runs once per minute # '0 */5 * * * *'
-      class: ScheduleLatestTransactionsJob
-    schedule_latest_accounts:
-      cron: '*/30 * * * * *'   # Runs once per minute # '0 */5 * * * *'
-      class: ScheduleLatestAccountsJob
+    # schedule_latest_transactions:
+    #   cron: '*/35 * * * * *'   # Runs once per minute # '0 */5 * * * *'
+    #   class: ScheduleLatestTransactionsJob
+    # schedule_latest_accounts:
+    #   cron: '*/28 * * * * *'   # Runs once per minute # '0 */5 * * * *'
+    #   class: ScheduleLatestAccountsJob
+    schedule_latest_messages:
+      cron: '*/25 * * * * *'   # Runs once per minute # '0 */5 * * * *'
+      class: ScheduleLatestMessagesJob

@@ -24,6 +24,10 @@ module Venom
       Venom::RetrieveAccountStateJob
     end
 
+    def process_account_job
+      Venom::ProcessAccountsJob
+    end
+
     def ch_module
       Clickhouse::Venom::Devnet
     end

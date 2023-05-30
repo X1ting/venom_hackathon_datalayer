@@ -24,6 +24,10 @@ module Everscale
       Everscale::RetrieveAccountStateJob
     end
 
+    def process_account_job
+      Everscale::ProcessAccountsJob
+    end
+
     def ch_module
       Clickhouse::Everscale::Mainnet
     end
