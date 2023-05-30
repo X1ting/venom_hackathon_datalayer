@@ -4,6 +4,7 @@ class ScheduleLatestMessagesJob < ApplicationJob
 
   def perform
     Clickhouse::Venom::Devnet::Message
+      .where('created_at >= ?', BUFFER_TIME.ago)
       .pluck(:id)
       .uniq
       .compact_blank
