@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_29_211729) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_30_105106) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -59,7 +59,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_29_211729) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "contract_uuid"
+    t.datetime "ext_created_at"
     t.index ["dst"], name: "index_decoded_messages_on_dst"
+    t.index ["ext_id", "blockchain", "network", "contract_uuid"], name: "uniq_per_blockchain_and_contract", unique: true
     t.index ["ext_id"], name: "index_decoded_messages_on_ext_id"
     t.index ["name"], name: "index_decoded_messages_on_name"
     t.index ["src"], name: "index_decoded_messages_on_src"

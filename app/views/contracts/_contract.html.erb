@@ -16,7 +16,7 @@
   <% if contract.tvc %>
     <p class="m-5 flex space-between gap-1">
       <strong class="block font-medium mb-1">Tvc:</strong>
-      <%= contract.tvc %>
+      <%= truncate_addr(contract.tvc) %>
     </p>
   <% end %>
 

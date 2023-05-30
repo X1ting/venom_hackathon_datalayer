@@ -1,11 +1,18 @@
 class DecodeMessagesJobBase < ApplicationJob
   queue_as :messages
 
-  def perform(contract_id)
+  def perform(contract_id, try_to_decode_all: false)
     contract = contract_base.find(contract_id)
-    code_hash = contract.code_hash
-    account_addresses = ch_module::Account.where(code_hash: code_hash).select('distinct(id)')
-    messages_count = ch_module::Message.where(src: account_addresses).or(ch_module::Message.where(dst: account_addresses)).count
+
+    if try_to_decode_all
+      messages_scope = ch_module::Message
+    else
+      account_addresses = ch_module::Account.where(code_hash: contract.code_hash).select('distinct(id)')
+      messages_scope = ch_module::Message.where(src: account_addresses).or(ch_module::Message.where(dst: account_addresses))
+    end
+
+    messages_count = messages_scope.count
+
     return if messages_count.zero?
 
     offset = 0
@@ -14,7 +21,7 @@ class DecodeMessagesJobBase < ApplicationJob
     abi = contract.abi
     while offset <= messages_count
       results = []
-      messages = ch_module::Message.where(src: account_addresses).or(ch_module::Message.where(dst: account_addresses)).limit(limit).offset(offset).select(:id, :boc, :src, :dst)
+      messages = messages_scope.limit(limit).offset(offset).select(:id, :boc, :src, :dst, :created_at)
 
       messages.each do |message|
         payload = {
@@ -30,18 +37,23 @@ class DecodeMessagesJobBase < ApplicationJob
         end
       end
       results.each do |result|
-        DecodedMessage.create(
-          blockchain: blockchain,
-          network: network,
-          ext_id: result[:message].id,
-          src: result[:message].src,
-          dst: result[:message].dst,
-          body_type: result[:result]["body_type"],
-          name: result[:result]["name"],
-          value: result[:result]["value"],
-          header: result[:result]["header"],
-          contract_uuid: contract.id,
-        )
+        begin
+          DecodedMessage.create(
+            blockchain: blockchain,
+            network: network,
+            ext_id: result[:message].id,
+            src: result[:message].src,
+            dst: result[:message].dst,
+            ext_created_at: result[:message].created_at,
+            body_type: result[:result]["body_type"],
+            name: result[:result]["name"],
+            value: result[:result]["value"],
+            header: result[:result]["header"],
+            contract_uuid: contract.id,
+          )
+        rescue ActiveRecord::RecordNotUnique => e
+          puts e
+        end
       end
 
       offset = offset + limit

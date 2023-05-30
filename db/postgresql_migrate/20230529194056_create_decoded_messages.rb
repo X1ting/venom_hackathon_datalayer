@@ -18,7 +18,5 @@ class CreateDecodedMessages < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-
-    # add_index :decoded_messages, [:ext_id, :blockchain, :network], unique: true
   end
 end

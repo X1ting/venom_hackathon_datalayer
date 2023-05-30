@@ -14,6 +14,14 @@ class ContractsController < ApplicationController
 
   # GET /contracts/1 or /contracts/1.json
   def show
+    unless @contract.decoded_messages.count.zero?
+      @contract_insights = @contract.decoded_messages.pluck(:name).uniq.map do |method_name|
+        {
+          name: method_name,
+          data: @contract.decoded_messages.where(name: method_name).group_by_minute(:ext_created_at, n: 15).count
+        }
+      end
+    end
   end
 
   # GET /contracts/new
