@@ -4,14 +4,21 @@ class DecodedMessagesController < ApplicationController
   # GET /decoded_messages or /decoded_messages.json
   def index
 
-    @decoded_messages = DecodedMessage
+    scope = DecodedMessage
       .left_joins(:contract)
       .joins("LEFT OUTER JOIN accounts as source_accounts ON source_accounts.address = decoded_messages.src")
       .joins("LEFT OUTER JOIN accounts as destination_accounts ON destination_accounts.address = decoded_messages.dst")
       .select('decoded_messages.*, destination_accounts.id as dst_id, source_accounts.id as src_id')
-      .order(:ext_created_at)
-      .page(params[:page])
 
+    if params[:with_account]
+      scope = scope.where(src: params[:with_account]).or(scope.where(dst: params[:with_account]))
+    end
+
+    if params[:with_name]
+      scope = scope.where(name: params[:with_name])
+    end
+
+    @decoded_messages = scope.order(:ext_created_at).page(params[:page])
   end
 
   # GET /decoded_messages/1 or /decoded_messages/1.json

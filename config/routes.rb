@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "insights#index"
 
+  resources :transactions, only: :index
   resources :accounts, only: [:index, :show]
   resources :insights, only: :index
   resources :contracts
