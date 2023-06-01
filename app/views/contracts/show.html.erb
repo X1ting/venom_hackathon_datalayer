@@ -20,11 +20,12 @@
       -->
     </div>
   </div>
-  <% if @contract_insights %>
-    <div class="px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
-      <h1> Insights: </h1>
-
-      <%= line_chart @contract_insights %>
-    </div>
-  <% end %>
 </div>
+<% if @contract_insights %>
+  <br />
+  <div class="px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <h1> Insights: </h1>
+
+    <%= line_chart @contract_insights %>
+  </div>
+<% end %>

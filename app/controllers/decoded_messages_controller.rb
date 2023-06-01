@@ -1,4 +1,5 @@
 class DecodedMessagesController < ApplicationController
+  include ContractsHelper
   before_action :set_decoded_message, only: %i[ show edit update destroy ]
 
   # GET /decoded_messages or /decoded_messages.json
@@ -23,6 +24,12 @@ class DecodedMessagesController < ApplicationController
 
   # GET /decoded_messages/1 or /decoded_messages/1.json
   def show
+    @decoded_message_insights = Contract.where(name: @decoded_message.contract.name).pluck(:id, :name).map do |(contract_id, contract_name)|
+      {
+        name: "#{format_contract_name(contract_name)}##{@decoded_message.name}",
+        data: DecodedMessage.where(name: @decoded_message.name, contract_uuid: contract_id).group_by_minute(:ext_created_at, n: 15).count
+      }
+    end
   end
 
   # GET /decoded_messages/new

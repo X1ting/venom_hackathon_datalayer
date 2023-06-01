@@ -1,42 +1,50 @@
 <div id="<%= dom_id decoded_message %>">
-  <p class="my-5">
+  <p class="m-5 flex space-between gap-1">
     <strong class="block font-medium mb-1">Blockchain:</strong>
-    <%= decoded_message.blockchain %>
+    <%= formatted_blockchain(decoded_message) %>
   </p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Network:</strong>
-    <%= decoded_message.network %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Ext:</strong>
+  <p class="m-5 flex space-between gap-1">
+    <strong class="block font-medium mb-1">Message ID:</strong>
     <%= decoded_message.ext_id %>
   </p>
 
-  <p class="my-5">
+  <p class="m-5 flex space-between gap-1">
     <strong class="block font-medium mb-1">Src:</strong>
-    <%= decoded_message.src %>
+    <%= decoded_message.source.present? ? link_to(decoded_message.src, account_path(decoded_message.source.id)) : decoded_message.src %>
   </p>
 
-  <p class="my-5">
+  <p class="m-5 flex space-between gap-1">
     <strong class="block font-medium mb-1">Dst:</strong>
-    <%= decoded_message.dst %>
+    <%= decoded_message.destination.present? ? link_to(decoded_message.dst, account_path(decoded_message.destination.id)) : decoded_message.dst %>
   </p>
 
-  <p class="my-5">
+  <p class="m-5 flex space-between gap-1">
     <strong class="block font-medium mb-1">Body type:</strong>
     <%= decoded_message.body_type %>
   </p>
 
-  <p class="my-5">
+  <p class="m-5 flex space-between gap-1">
     <strong class="block font-medium mb-1">Name:</strong>
     <%= decoded_message.name %>
   </p>
 
-  <% if action_name != "show" %>
-    <%= link_to "Show this decoded message", decoded_message, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to 'Edit this decoded message', edit_decoded_message_path(decoded_message), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
-    <hr class="mt-6">
-  <% end %>
+  <p class="m-5 flex space-between gap-1">
+    <strong class="block font-medium mb-1">Contract:</strong>
+    <%= link_to(decoded_message.contract.name, contract_path(decoded_message.contract)) %>
+  </p>
+
+  <p class="m-5">
+    <strong class="block font-medium mb-1">Header:</strong>
+    <pre class="m-5">
+<%= JSON.pretty_generate(decoded_message.header) %>
+    </pre>
+  </p>
+
+  <div class="m-5" x-data="{ open: false }">
+    <button class="rounded-lg py-3 px-5 bg-gray-100 font-medium" x-on:click="open = ! open">Show/Close Value</button>
+    <pre x-show="open">
+<%= JSON.pretty_generate(decoded_message.value) %>
+    </pre>
+  </div>
 </div>
