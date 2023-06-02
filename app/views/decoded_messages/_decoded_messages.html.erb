@@ -30,6 +30,10 @@
                   <button class="flex items-center gap-x-2"> <span>Blockchain</span> </button>
                 </th>
 
+                <th scope="col" class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                  <button class="flex items-center gap-x-2"> <span>Created</span> </button>
+                </th>
+
                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"> Actions </th>
               </tr>
             </thead>
@@ -61,6 +65,9 @@
                     <div class="flex items-center gap-x-2">
                       <p class="px-3 py-1 text-xs text-<%= blockchain_color(decoded_message) %>-500 rounded-full dark:bg-gray-800 bg-<%= blockchain_color(decoded_message) %>-100/60"><%= formatted_blockchain(decoded_message) %></p>
                     </div>
+                  </td>
+                  <td class="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                    <h2 class="text-sm font-normal text-black-500"><%= decoded_message.ext_created_at %></h2>
                   </td>
                   <td class="px-4 py-4 text-sm whitespace-nowrap">
                     <div class="flex items-center gap-x-6">

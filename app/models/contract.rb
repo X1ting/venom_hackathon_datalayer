@@ -1,16 +1,8 @@
 class Contract < ApplicationRecord
+  include Blockchainable
   paginates_per 20
   before_create :validate_abi
   before_save :validate_abi
-  enum blockchain: {
-    venom: 0,
-    everscale: 1
-  }
-
-  enum network: {
-    devnet: 0,
-    mainnet: 1
-  }
 
   has_many :decoded_messages, foreign_key: :contract_uuid
 

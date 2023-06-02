@@ -4,6 +4,9 @@ class ContractsController < ApplicationController
   # GET /contracts or /contracts.json
   def index
     scope = Contract.all
+    if params[:name]
+      scope = scope.where("contracts.name ILIKE ?", "%#{params[:name]}%")
+    end
     @contracts = scope
       .left_joins(:decoded_messages)
       .select('contracts.*, coalesce(count(decoded_messages.contract_uuid), 0) as messages_count')

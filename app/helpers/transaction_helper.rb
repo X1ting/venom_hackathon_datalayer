@@ -32,4 +32,5 @@ module TransactionHelper
   def format_amount(amount)
     amount.to_f / 1000000000
   end
+
 end

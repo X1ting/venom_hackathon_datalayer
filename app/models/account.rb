@@ -1,4 +1,5 @@
 class Account < ApplicationRecord
+  include Blockchainable
   paginates_per 20
 
   enum kind: {
@@ -6,16 +7,6 @@ class Account < ApplicationRecord
     nft: 1,
     collection: 2,
     wallet: 3
-  }
-
-  enum blockchain: {
-    venom: 0,
-    everscale: 1
-  }
-
-  enum network: {
-    devnet: 0,
-    mainnet: 1
   }
 
   enum base_currency: {

@@ -1,11 +1,20 @@
 class InsightsController < ApplicationController
   def index
-    redirect_to insights_path, notice: "Date is invalid" and return if params[:since].present? && !valid_date?(params[:since])
+    redirect_to insights_path, notice: "Since date is invalid" and return unless valid_date?(params[:since])
+    redirect_to insights_path, notice: "Until date is invalid" and return unless valid_date?(params[:until])
+
     if params[:since].present?
-      since = Date.parse(params[:since])
-      @transactions = Transaction.where(time: since..)
+      @transactions = Transaction.where(time: Date.parse(params[:since])..)
+      @accounts = Account.where(created_at: Date.parse(params[:since])..)
+      @events = DecodedMessage.where(ext_created_at: Date.parse(params[:since])..)
     else
       @transactions = Transaction.where(time: 1.day.ago..)
+      @accounts = Account.where(created_at: 1.day.ago..)
+      @events = DecodedMessage.where(ext_created_at: 1.day.ago..)
+    end
+
+    if params[:until].present?
+      @transactions = Transaction.where(time: ..Date.parse(params[:until]))
     end
 
     @transactions_insights = [
@@ -27,13 +36,6 @@ class InsightsController < ApplicationController
       }
     ]
 
-    if params[:since].present?
-      since = Date.parse(params[:since])
-      @accounts = Account.where(created_at: since..)
-    else
-      @accounts = Account.where(created_at: 1.day.ago..)
-    end
-
     @accounts_insights = [
       {
         name: 'Venom',
@@ -53,25 +55,11 @@ class InsightsController < ApplicationController
       }
     ]
 
-    if params[:since].present?
-      since = Date.parse(params[:since])
-      @events = DecodedMessage.where(ext_created_at: since..)
-    else
-      @events = DecodedMessage.where(ext_created_at: 1.day.ago..)
-    end
-
     @events_insights = @events.pluck(:name).uniq.map do |method_name|
       {
         name: method_name,
         data: @events.where(name: method_name).group_by_minute(:ext_created_at, n: 15).count
       }
     end
-  end
-
-
-  def valid_date?(date)
-    Date.parse(date)
-  rescue Date::Error
-    false
   end
 end

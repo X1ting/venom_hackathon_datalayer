@@ -1,9 +1,10 @@
 class DecodedMessagesController < ApplicationController
   include ContractsHelper
   before_action :set_decoded_message, only: %i[ show edit update destroy ]
-
   # GET /decoded_messages or /decoded_messages.json
   def index
+    redirect_to decoded_messages_path, notice: "Since date is invalid" and return unless valid_date?(params[:since])
+    redirect_to decoded_messages_path, notice: "Until date is invalid" and return unless valid_date?(params[:until])
 
     scope = DecodedMessage
       .left_joins(:contract)
@@ -11,12 +12,36 @@ class DecodedMessagesController < ApplicationController
       .joins("LEFT OUTER JOIN accounts as destination_accounts ON destination_accounts.address = decoded_messages.dst")
       .select('decoded_messages.*, destination_accounts.id as dst_id, source_accounts.id as src_id')
 
-    if params[:with_account]
+    if params[:since].present?
+      scope = scope.where(ext_created_at: Date.parse(params[:since])..)
+    end
+
+    if params[:until].present?
+      scope = scope.where(ext_created_at: ..Date.parse(params[:until]))
+    end
+
+    if params[:blockchain].present?
+      scope = scope.where(blockchain: params[:blockchain])
+    end
+
+    if params[:contract_uuid].present?
+      scope = scope.where(contract_uuid: params[:contract_uuid])
+    end
+
+    if params[:from].present?
+      scope = scope.where(src: params[:from])
+    end
+
+    if params[:to].present?
+      scope = scope.where(src: params[:to])
+    end
+
+    if params[:with_account].present?
       scope = scope.where(src: params[:with_account]).or(scope.where(dst: params[:with_account]))
     end
 
-    if params[:with_name]
-      scope = scope.where(name: params[:with_name])
+    if params[:name].present?
+      scope = scope.where(name: params[:name])
     end
 
     @decoded_messages = scope.order(:ext_created_at).page(params[:page])
@@ -24,22 +49,22 @@ class DecodedMessagesController < ApplicationController
 
   # GET /decoded_messages/1 or /decoded_messages/1.json
   def show
-    @decoded_message_insights = Contract.where(name: @decoded_message.contract.name).pluck(:id, :name).map do |(contract_id, contract_name)|
+    @decoded_message_insights = [
       {
-        name: "#{format_contract_name(contract_name)}##{@decoded_message.name}",
-        data: DecodedMessage.where(name: @decoded_message.name, contract_uuid: contract_id).group_by_minute(:ext_created_at, n: 15).count
+        name: "#{format_contract_name(@decoded_message.contract.name)}##{@decoded_message.name}",
+        data: DecodedMessage.where(name: @decoded_message.name, contract_uuid: @decoded_message.contract_uuid).group_by_minute(:ext_created_at, n: 15).count
       }
-    end
+    ]
   end
 
   # GET /decoded_messages/new
-  def new
-    @decoded_message = DecodedMessage.new
-  end
+  # def new
+  #   @decoded_message = DecodedMessage.new
+  # end
 
-  # GET /decoded_messages/1/edit
-  def edit
-  end
+  # # GET /decoded_messages/1/edit
+  # def edit
+  # end
 
   # POST /decoded_messages or /decoded_messages.json
   def create
@@ -56,28 +81,28 @@ class DecodedMessagesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /decoded_messages/1 or /decoded_messages/1.json
-  def update
-    respond_to do |format|
-      if @decoded_message.update(decoded_message_params)
-        format.html { redirect_to decoded_message_url(@decoded_message), notice: "Decoded message was successfully updated." }
-        format.json { render :show, status: :ok, location: @decoded_message }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @decoded_message.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  # # PATCH/PUT /decoded_messages/1 or /decoded_messages/1.json
+  # def update
+  #   respond_to do |format|
+  #     if @decoded_message.update(decoded_message_params)
+  #       format.html { redirect_to decoded_message_url(@decoded_message), notice: "Decoded message was successfully updated." }
+  #       format.json { render :show, status: :ok, location: @decoded_message }
+  #     else
+  #       format.html { render :edit, status: :unprocessable_entity }
+  #       format.json { render json: @decoded_message.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
-  # DELETE /decoded_messages/1 or /decoded_messages/1.json
-  def destroy
-    @decoded_message.destroy
+  # # DELETE /decoded_messages/1 or /decoded_messages/1.json
+  # def destroy
+  #   @decoded_message.destroy
 
-    respond_to do |format|
-      format.html { redirect_to decoded_messages_url, notice: "Decoded message was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
+  #   respond_to do |format|
+  #     format.html { redirect_to decoded_messages_url, notice: "Decoded message was successfully destroyed." }
+  #     format.json { head :no_content }
+  #   end
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.
