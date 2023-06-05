@@ -23,13 +23,7 @@ class Account < ApplicationRecord
   end
 
   def ch_account_model
-    if venom? && devnet?
-      Clickhouse::Venom::Devnet::Account
-    elsif everscale? && mainnet?
-      Clickhouse::Everscale::Mainnet::Account
-    else
-      raise NotImplementedError.new
-    end
+    clickhouse_module::Account
   end
 
   def decoded_messages

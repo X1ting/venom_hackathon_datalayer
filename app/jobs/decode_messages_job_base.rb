@@ -4,6 +4,7 @@ class DecodeMessagesJobBase < ApplicationJob
   def perform(contract_ids: nil, try_to_decode_all: false, message_ids: nil)
     if contract_ids
       contracts_scope = contract_base.where(id: contract_ids)
+      contract_base.where(id: contract_ids).update_all(init_population_state: :in_progress)
     else
       contracts_scope = contract_base
     end
@@ -70,6 +71,10 @@ class DecodeMessagesJobBase < ApplicationJob
       addresses = results.map {|result| [result[:message].src, result[:message].dst]}.uniq.flatten.compact_blank
       process_account_job.perform_later(addresses)
       offset = offset + limit
+    end
+
+    if contract_ids
+      contract_base.where(id: contract_ids).update_all(init_population_state: :done)
     end
   end
 end

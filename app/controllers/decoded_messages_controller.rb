@@ -44,6 +44,11 @@ class DecodedMessagesController < ApplicationController
       scope = scope.where(name: params[:name])
     end
 
+    if params[:category].present?
+      contract_uuids = Contract.where(category: params[:category]).select(:id)
+      scope = scope.where(contract_uuid: contract_uuids)
+    end
+
     @decoded_messages = scope.order(:ext_created_at).page(params[:page])
   end
 

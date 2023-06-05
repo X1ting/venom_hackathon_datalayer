@@ -48,6 +48,20 @@
     </p>
   <% end %>
 
+  <% if contract.category %>
+    <p class="m-5 flex space-between gap-1">
+      <strong class="block font-medium mb-1">Category:</strong>
+      <%= contract.category.titleize %>
+    </p>
+  <% end %>
+
+  <% if contract.init_population_state %>
+    <p class="m-5 flex space-between gap-1">
+      <strong class="block font-medium mb-1">Population State:</strong>
+      <%= contract.init_population_state.titleize %>
+    </p>
+  <% end %>
+
     <div class="m-5" x-data="{ open: false }">
       <button class="rounded-lg py-3 px-5 bg-gray-100 font-medium" x-on:click="open = ! open">Show/Close ABI</button>
       <pre x-show="open">

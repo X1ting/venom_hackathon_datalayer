@@ -17,48 +17,23 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :project_link %>
-    <%= form.text_field :project_link, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.label :blockchain, class: "flex mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.select :blockchain, options_for_select(Contract.blockchains.map {|key, value| [key.titleize, Contract.blockchains.key(value)]}, contract.blockchain), {}, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
   </div>
 
   <div class="my-5">
-    <%= form.label :tvc %>
-    <%= form.text_field :tvc, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.label :network, class: "flex mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.select :network, options_for_select(Contract.networks.map {|key, value| [key.titleize, Contract.networks.key(value)]}, contract.network), {}, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
   </div>
 
   <div class="my-5">
-    <%= form.label :code_hash %>
-    <%= form.text_field :code_hash, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :compiler_version %>
-    <%= form.text_field :compiler_version, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :linker_version %>
-    <%= form.text_field :linker_version, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :blockchain %>
-    <%= form.select :blockchain, options_for_select(Contract.blockchains.map {|key, value| [key.titleize, Contract.blockchains.key(value)]}, contract.blockchain) %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :network %>
-    <%= form.select :network, options_for_select(Contract.networks.map {|key, value| [key.titleize, Contract.networks.key(value)]}, contract.network) %>
+    <%= form.label :category, class: "flex mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+    <%= form.select :category, options_for_select(Contract.categories.map {|key, value| [key.titleize, Contract.categories.key(value)]}, contract.category), {}, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
   </div>
 
   <div class="my-5">
     <%= form.label :abi %>
-    <%= form.text_field :abi, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :sources %>
-    <%= form.text_field :sources, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.text_field :abi, class: "block  mt-2 w-full  placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300", placeholder: 'Paste JSON' %>
   </div>
 
   <div class="inline">
