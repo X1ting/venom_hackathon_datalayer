@@ -1,7 +1,14 @@
-class DecodeMessagesJobBase < ApplicationJob
-  queue_as :messages
+class DecodeMessagesJobBase < SidekiqJob
+  sidekiq_options :queue => :decode_messages
 
-  def perform(contract_ids: nil, try_to_decode_all: false, message_ids: nil)
+  sidekiq_throttle(concurrency: { limit: 1 })
+
+
+  def perform(options)
+    contract_ids = options["contract_ids"]
+    try_to_decode_all = options["try_to_decode_all"]
+    message_ids = options["message_ids"]
+
     if contract_ids
       contracts_scope = contract_base.where(id: contract_ids)
       contract_base.where(id: contract_ids).update_all(init_population_state: :in_progress)

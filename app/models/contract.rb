@@ -41,7 +41,10 @@ class Contract < ApplicationRecord
   end
 
   def queue_init_population
-    blockchain_module::DecodeMessagesJob.perform_later(contract_ids: [self.id], try_to_decode_all: true)
+    blockchain_module::DecodeMessagesJob.perform_async({
+      "contract_ids" => [self.id],
+      "try_to_decode_all" => true
+    })
     update(init_population_state: :queued)
   end
 

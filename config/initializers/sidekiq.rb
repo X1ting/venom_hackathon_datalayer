@@ -1,3 +1,6 @@
+require "sidekiq/throttled"
+Sidekiq::Throttled.setup!
+
 Sidekiq.configure_server do |config|
   config.redis = { url: ENV.fetch('REDIS_URL', 'redis://localhost:6379/1') }
   # config.server_middleware do |chain|

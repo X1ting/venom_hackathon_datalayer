@@ -1,4 +1,13 @@
 GIT
+  remote: git@github.com:ixti/sidekiq-throttled.git
+  revision: d3861659b8579364fe13df20e3fd37ffb2e1e977
+  branch: main
+  specs:
+    sidekiq-throttled (1.0.0.alpha)
+      redis-prescription (~> 2.2)
+      sidekiq (>= 6.5)
+
+GIT
   remote: git@github.com:trumenov/clickhouse-activerecord.git
   revision: 2d2e8a39e9dbc2c88b084aa7d5e7606d17dd8690
   specs:
@@ -235,6 +244,7 @@ GEM
     redis (4.8.1)
     redis-client (0.14.1)
       connection_pool
+    redis-prescription (2.6.0)
     regexp_parser (2.8.0)
     reline (0.3.3)
       io-console (~> 0.5)
@@ -321,6 +331,7 @@ DEPENDENCIES
   selenium-webdriver
   sidekiq
   sidekiq-scheduler (~> 5.0)
+  sidekiq-throttled!
   sprockets-rails
   stimulus-rails
   tailwindcss-rails

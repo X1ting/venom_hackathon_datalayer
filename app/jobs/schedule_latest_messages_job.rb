@@ -9,7 +9,10 @@ class ScheduleLatestMessagesJob < ApplicationJob
       .uniq
       .compact_blank
       .in_groups_of(50) do |batch|
-        Venom::DecodeMessagesJob.perform_later(message_ids: batch, try_to_decode_all: true)
+        Venom::DecodeMessagesJob.perform_async({
+          "message_ids" => batch.compact,
+          "try_to_decode_all" => true
+        })
       end
   end
 end

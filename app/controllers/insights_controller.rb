@@ -15,6 +15,8 @@ class InsightsController < ApplicationController
 
     if params[:until].present?
       @transactions = Transaction.where(time: ..Date.parse(params[:until]))
+      @accounts = Account.where(created_at: ..Date.parse(params[:until]))
+      @events = DecodedMessage.where(ext_created_at: ..Date.parse(params[:until]))
     end
 
     @transactions_insights = [
