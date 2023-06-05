@@ -1,9 +1,6 @@
 class DecodeMessagesJobBase < SidekiqJob
   sidekiq_options :queue => :decode_messages
 
-  sidekiq_throttle(concurrency: { limit: 1 })
-
-
   def perform(options)
     contract_ids = options["contract_ids"]
     try_to_decode_all = options["try_to_decode_all"]
