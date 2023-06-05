@@ -1,5 +1,5 @@
-class ProcessAccountsJobBase < ApplicationJob
-  queue_as :accounts
+class ProcessAccountsJobBase < SidekiqJob
+  sidekiq_options :queue => :accounts
 
   def perform(address_ids)
     existing_pg_accounts_ids = account_base.where(address: address_ids).pluck(:address)
@@ -13,7 +13,7 @@ class ProcessAccountsJobBase < ApplicationJob
         base_currency: base_currency
       )
 
-      retrieve_account_state_job.perform_later(account.id)
+      retrieve_account_state_job.perform_async(account.id)
     end
   end
 

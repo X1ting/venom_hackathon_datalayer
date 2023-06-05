@@ -1,6 +1,6 @@
 module Venom
-  class ProcessTransactionJob < ApplicationJob
-    queue_as :transactions
+  class ProcessTransactionJob < SidekiqJob
+    sidekiq_options :queue => :transactions
 
     def perform(tx_ids)
       ch_transactions = Clickhouse::Venom::Devnet::Transaction.where(id: tx_ids)
@@ -18,7 +18,7 @@ module Venom
           network: :devnet
         )
 
-        TransactionCategorizerJob.perform_later(transaction.id)
+        TransactionCategorizerJob.perform_async(transaction.id)
       end
     end
   end

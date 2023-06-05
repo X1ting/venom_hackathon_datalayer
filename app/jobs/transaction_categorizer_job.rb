@@ -1,5 +1,5 @@
-class TransactionCategorizerJob < ApplicationJob
-  queue_as :transaction_categorizer
+class TransactionCategorizerJob < SidekiqJob
+  sidekiq_options :queue => :transaction_categorizer
 
   def perform(transaction_id)
     @transaction = Transaction.find(transaction_id)

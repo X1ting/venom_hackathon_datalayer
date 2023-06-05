@@ -1,6 +1,6 @@
 module Everscale
-  class RetrieveAccountStateJob < ApplicationJob
-    queue_as :accounts
+  class RetrieveAccountStateJob < SidekiqJob
+    sidekiq_options :queue =>  :accounts
 
     def perform(account_id)
       account = Account.find(account_id)

@@ -1,5 +1,5 @@
-class AnalyzeAccountJob < ApplicationJob
-  queue_as :accounts
+class AnalyzeAccountJob < SidekiqJob
+  sidekiq_options :queue => :accounts
 
   def perform(account_id)
     @account = Account.find(account_id)
@@ -12,7 +12,7 @@ class AnalyzeAccountJob < ApplicationJob
 
       nft_data.gsub(remove_shit_regexp, '')
     else
-      # Venom::RetrieveAccountStateJob.perform_later(account.id)
+      # Venom::RetrieveAccountStateJob.perform_async(account.id)
     end
   end
 

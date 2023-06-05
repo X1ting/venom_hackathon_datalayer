@@ -8,14 +8,14 @@ class ScheduleLatestAccountsJob < ApplicationJob
       .pluck(:id)
       .uniq
       .in_groups_of(50) do |batch|
-        Venom::ProcessAccountsJob.perform_later(batch.compact)
+        Venom::ProcessAccountsJob.perform_async(batch.compact)
       end
     Clickhouse::Everscale::Mainnet::Account
       .where('created_at_local >= ?', BUFFER_TIME.ago)
       .pluck(:id)
       .uniq
       .in_groups_of(50) do |batch|
-        Everscale::ProcessAccountsJob.perform_later(batch.compact)
+        Everscale::ProcessAccountsJob.perform_async(batch.compact)
       end
   end
 end

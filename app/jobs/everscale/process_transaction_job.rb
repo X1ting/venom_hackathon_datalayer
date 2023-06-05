@@ -1,6 +1,6 @@
 module Everscale
-  class ProcessTransactionJob < ApplicationJob
-    queue_as :transactions
+  class ProcessTransactionJob < SidekiqJob
+    sidekiq_options :queue => :transactions
 
     def perform(tx_ids)
       ch_transactions = Clickhouse::Everscale::Mainnet::Transaction.where(id: tx_ids)
@@ -18,7 +18,7 @@ module Everscale
           network: :mainnet
         )
 
-        TransactionCategorizerJob.perform_later(transaction.id)
+        TransactionCategorizerJob.perform_async(transaction.id)
       end
     end
   end

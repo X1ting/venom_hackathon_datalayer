@@ -76,7 +76,7 @@ class DecodeMessagesJobBase < SidekiqJob
       end
 
       addresses = results.map {|result| [result[:message].src, result[:message].dst]}.uniq.flatten.compact_blank
-      process_account_job.perform_later(addresses)
+      process_account_job.perform_async(addresses)
       offset = offset + limit
     end
 
