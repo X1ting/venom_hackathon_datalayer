@@ -75,6 +75,8 @@ class InsightsController < ApplicationController
 
     if params[:since].present?
       scope = scope.where(ext_created_at: Date.parse(params[:since])..)
+    else
+      scope = scope.where(ext_created_at: 2.days.ago..)
     end
 
     if params[:until].present?
