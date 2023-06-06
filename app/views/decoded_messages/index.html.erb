@@ -3,6 +3,7 @@
     <div class="px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
       <div class="flex items-center justify-between">
         <span class="text-sm font-light text-gray-600 dark:text-gray-400">Filters:</span>
+        <span class="text-sm font-light text-gray-600 dark:text-gray-400">Total events: <%= DecodedMessage.count %></span>
         <%= link_to('Reset filters', decoded_messages_path, class: 'px-3 py-1 text-sm font-bold text-gray-100 transition-colors duration-300 transform bg-gray-600 rounded cursor-pointer hover:bg-gray-500') %>
       </div>
       <div class="flex">

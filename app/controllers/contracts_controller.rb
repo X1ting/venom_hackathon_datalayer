@@ -7,6 +7,9 @@ class ContractsController < ApplicationController
     if params[:name]
       scope = scope.where("contracts.name ILIKE ?", "%#{params[:name]}%")
     end
+    if params[:category]
+      scope = scope.where(category: params[:category])
+    end
     @contracts = scope
       .left_joins(:decoded_messages)
       .select('contracts.*, coalesce(count(decoded_messages.contract_uuid), 0) as messages_count')

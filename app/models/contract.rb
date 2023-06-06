@@ -11,6 +11,7 @@ class Contract < ApplicationRecord
     staking: 4,
     farming: 5,
     wallet: 6,
+    gaming: 7,
   }
 
   enum init_population_state: {
