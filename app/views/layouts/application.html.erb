@@ -24,7 +24,8 @@
               </div>
               <divret class="hidden sm:ml-6 sm:block">
                 <div class="flex space-x-4">
-                  <%= link_to('Insights', insights_path, class: nav_icon_class(insights_path)) %>
+                  <%= link_to('Dashboard', insights_path, class: nav_icon_class(insights_path)) %>
+                  <%= link_to('Events Insights', events_insights_path, class: nav_icon_class(events_insights_path)) %>
                   <%= link_to('Contracts', contracts_path, class: nav_icon_class(contracts_path)) %>
                   <%= link_to('Events', decoded_messages_path, class: nav_icon_class(decoded_messages_path)) %>
                   <%= link_to('Accounts', accounts_path, class: nav_icon_class(accounts_path)) %>

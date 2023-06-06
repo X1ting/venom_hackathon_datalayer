@@ -15,7 +15,9 @@ Rails.application.routes.draw do
   resources :decoded_messages, only: [:index, :show]
   resources :transactions, only: :index
   resources :accounts, only: [:index, :show]
-  resources :insights, only: :index
+  resources :insights, only: :index do
+    get :events, on: :collection
+  end
   resources :contracts
 
   get '/search', to: 'search#search'
