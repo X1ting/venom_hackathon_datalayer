@@ -1,0 +1,84 @@
+---
+openapi: 3.0.1
+info:
+  title: API V0
+  version: v0
+paths:
+  "/api/v0/contracts":
+    get:
+      summary: list contracts
+      parameters:
+      - name: category
+        in: query
+        description: 'Contract category: unknown,nft,dex,lending,staking,farming,wallet,gaming'
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Contract name
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: string
+      tags:
+      - Contracts
+      responses:
+        '200':
+          description: successful
+  "/api/v0/decoded_messages":
+    get:
+      summary: list decoded_messages
+      tags:
+      - Events
+      parameters:
+      - name: category
+        in: query
+        description: 'Contract category: unknown,nft,dex,lending,staking,farming,wallet,gaming'
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Event name, e.g. nftCreated
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: string
+      - name: since
+        in: query
+        description: Since date e.g. 26.05.2023
+        schema:
+          type: string
+      - name: until
+        in: query
+        description: Until date e.g. 26.05.2023
+        schema:
+          type: string
+      - name: blockchain
+        in: query
+        description: 'Blockchain: venom, everscale'
+        schema:
+          type: string
+      - name: contract_uuid
+        in: query
+        description: Contract UUID
+        schema:
+          type: string
+      - name: with_account
+        in: query
+        description: Account address
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+servers:
+- url: "{defaultHost}"
+  variables:
+    defaultHost:
+      default: https://datalayer.xiting.me

@@ -25,7 +25,7 @@ module Api
         end
 
         if params[:name].present?
-          scope = scope.where(name: params[:name])
+          scope = scope.where('name ILIKE ?', "%#{params[:name]}%")
         end
 
         if params[:category].present?
