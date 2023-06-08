@@ -1,5 +1,4 @@
 class DecodeMessagesJobBase < SidekiqJob
-  sidekiq_options :queue => :decode_messages
 
   def perform(options)
     contract_ids = options["contract_ids"]

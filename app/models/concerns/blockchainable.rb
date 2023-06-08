@@ -37,6 +37,12 @@ module Blockchainable
   end
 
   def clickhouse_module
-    Clickhouse::blockchain_module::network_module
+    if venom?
+      Clickhouse::Venom::Devnet
+    elsif everscale?
+      Clickhouse::Everscale::Mainnet
+    else
+      raise NotImplementedError.new
+    end
   end
 end
