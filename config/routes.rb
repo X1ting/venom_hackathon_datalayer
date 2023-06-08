@@ -21,4 +21,11 @@ Rails.application.routes.draw do
   resources :contracts
 
   get '/search', to: 'search#search'
+
+  namespace :api do
+    namespace :v0 do
+      resources :contracts, only: :index
+      resources :decoded_messages, only: :index
+    end
+  end
 end

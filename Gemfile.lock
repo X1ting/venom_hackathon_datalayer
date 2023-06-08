@@ -158,6 +158,8 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -322,6 +324,7 @@ DEPENDENCIES
   httparty
   importmap-rails
   jbuilder
+  jsonapi-serializer
   kaminari (~> 1.2)
   pg (~> 1.1)
   pry
