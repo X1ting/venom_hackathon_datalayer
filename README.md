@@ -4,6 +4,8 @@
 
 Latest version of web application deployed to [datalayer.xiting.me](https://datalayer.xiting.me)
 
+API Docs available [here](https://datalayer.xiting.me/api-docs)
+
 ### How it works
 
 ```mermaid
