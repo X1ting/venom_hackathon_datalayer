@@ -30,4 +30,7 @@ Rails.application.routes.draw do
       resources :decoded_messages, only: :index
     end
   end
+  resources :status, only: [] do
+    get :transactions, on: :collection
+  end
 end
