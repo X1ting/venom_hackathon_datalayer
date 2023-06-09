@@ -20,7 +20,7 @@ class AccountsController < ApplicationController
     #   .order(created_at: :desc)
     #   .limit(1000).to_a
     #   .reduce({}) {|acc, i|  acc[i.created_at] = format_amount(i.avg_balance); acc }
-    @decoded_messages = @account.decoded_messages.page(params[:page])
+    @decoded_messages = @account.decoded_messages.order(ext_created_at: :desc).page(params[:page])
   end
 
   def filter_params
