@@ -49,7 +49,7 @@ class DecodedMessagesController < ApplicationController
       scope = scope.where(contract_uuid: contract_uuids)
     end
 
-    @decoded_messages = scope.order(:ext_created_at).page(params[:page])
+    @decoded_messages = scope.order(ext_created_at: :desc).page(params[:page])
   end
 
   # GET /decoded_messages/1 or /decoded_messages/1.json
