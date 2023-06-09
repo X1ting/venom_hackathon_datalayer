@@ -18,7 +18,7 @@ module Venom
           network: :devnet
         )
 
-        TransactionCategorizerJob.perform_async(transaction.id)
+        # TransactionCategorizerJob.perform_async(transaction.id)
       end
     end
   end
