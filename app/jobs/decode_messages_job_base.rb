@@ -34,8 +34,12 @@ class DecodeMessagesJobBase < SidekiqJob
     while offset <= messages_count
       results = []
       messages = messages_scope.limit(limit).offset(offset).select(:id, :boc, :src, :dst, :created_at)
+      existing_messages_ids = DecodedMessage.where(ext_id: messages.map(&:id)).pluck(:ext_id)
+
       puts "Messages loaded, messsage count is: #{messages_count}"
       messages.each do |message|
+        next if message.id.in?(existing_messages_ids)
+
         contracts_data.each do |(contract_id, abi)|
           payload = {
             abi: { type: 'Serialized', value: abi },
