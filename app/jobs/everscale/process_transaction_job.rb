@@ -18,7 +18,7 @@ module Everscale
           network: :mainnet
         )
 
-        TransactionCategorizerJob.perform_async(transaction.id)
+        # TransactionCategorizerJob.perform_async(transaction.id)
       end
     end
   end

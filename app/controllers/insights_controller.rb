@@ -29,14 +29,6 @@ class InsightsController < ApplicationController
       {
         name: 'Everscale',
         data: @transactions.everscale.mainnet.group_by_minute(:time, n: 5).count
-      },
-      {
-        name: 'Devnet Drop',
-        data: @transactions.devnet_drop.group_by_minute(:time, n: 5).count
-      },
-      {
-        name: 'Funds Transfer',
-        data: @transactions.funds_transfer.group_by_minute(:time, n: 5).count
       }
     ]
 
