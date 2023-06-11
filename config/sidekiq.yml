@@ -1,13 +1,13 @@
 ---
 :concurrency: 2
 production:
-  :concurrency: 4
+  :concurrency: 5
 :queues:
-  - [transactions, 2]
-  - [accounts, 2]
-  - [transaction_categorizer, 1]
-  - [messages, 1]
-  - [decode_messages, 1]
+  - [transactions, 3]
+  - [accounts, 3]
+  - [messages, 3]
+  - [decode_messages_venom, 2]
+  - [decode_messages_everscale, 1]
 :scheduler:
   :schedule:
     schedule_latest_transactions:
