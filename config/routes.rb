@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   resources :accounts, only: [:index, :show]
   resources :insights, only: :index do
     get :events, on: :collection
+    get :events_per_category, on: :collection
+    get :events_per_contract, on: :collection
   end
   resources :contracts
 
