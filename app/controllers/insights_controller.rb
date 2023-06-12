@@ -20,48 +20,11 @@ class InsightsController < ApplicationController
       @events = DecodedMessage.where(ext_created_at: ..Date.parse(params[:until]))
     end
 
-    @transactions_insights = Rails.cache.fetch("/index#transactions_insights?#{params}", expires_in: 20.minutes) do
-      [
-        {
-          name: 'Venom',
-          data: @transactions.venom.devnet.group_by_minute(:time, n: 5).count
-        },
-        {
-          name: 'Everscale',
-          data: @transactions.everscale.mainnet.group_by_minute(:time, n: 5).count
-        }
-      ]
-    end
+    @transactions_insights = @transactions.group(:blockchain).group_by_minute(:time, n: 5).count
 
-    @accounts_insights = Rails.cache.fetch("/index#accounts_insights?#{params}", expires_in: 20.minutes) do
-      [
-        {
-          name: 'Venom',
-          data: @accounts.venom.devnet.group_by_minute(:created_at, n: 5).count
-        },
-        {
-          name: 'Everscale',
-          data: @accounts.everscale.mainnet.group_by_minute(:created_at, n: 5).count
-        },
-        {
-          name: 'NFT',
-          data: @accounts.nft.group_by_minute(:created_at, n: 5).count
-        },
-        {
-          name: 'Wallets',
-          data: @accounts.wallet.group_by_minute(:created_at, n: 5).count
-        }
-      ]
-    end
+    @accounts_insights = @accounts.group(:blockchain).group_by_minute(:created_at, n: 5).count
 
-    @events_insights = Rails.cache.fetch("/index#events_insights?#{params}", expires_in: 20.minutes) do
-      @events.pluck(:name).uniq.map do |method_name|
-        {
-          name: method_name,
-          data: @events.where(name: method_name).group_by_minute(:ext_created_at, n: 15).count
-        }
-      end
-    end
+    @events_insights = @events.group(:name).group_by_minute(:ext_created_at, n: 5).count
   end
 
   def events
@@ -70,8 +33,24 @@ class InsightsController < ApplicationController
 
     redirect_to insights_events_path, notice: "Since date is invalid" and return unless valid_date?(params[:since])
     redirect_to insights_events_path, notice: "Until date is invalid" and return unless valid_date?(params[:until])
+  end
 
-    scope = DecodedMessage.all
+  def events_insights_per_contract
+    scope = filter_scope(DecodedMessage.all)
+    render json: scope.joins(:contract).group('contracts.name, decoded_messages.name').group_by_minute(:ext_created_at, n: 15).count.chart_json
+  end
+
+  def events_insights_per_category
+    scope = filter_scope(DecodedMessage.all)
+    render json: scope.joins(:contract).group('contracts.category').group_by_minute(:ext_created_at, n: 15).count.transform_keys {|key| [Contract.categories.key(key.first).titleize, key.last] }.chart_json
+  end
+
+  def search_params
+    params.permit(:since, :until, :blockchain, :contract_uuid, :from, :to, :with_account, :name, :category)
+  end
+
+  def filter_scope(init_scope)
+    scope = init_scope
 
     if params[:since].present?
       scope = scope.where(ext_created_at: Date.parse(params[:since])..)
@@ -111,20 +90,5 @@ class InsightsController < ApplicationController
       contract_uuids = Contract.where(category: params[:category]).select(:id)
       scope = scope.where(contract_uuid: contract_uuids)
     end
-
-    contracts = Contract.where(id: scope.select(:contract_uuid).distinct)
-
-    # @events_insights_per_contract = contracts.select(:id, :name).flat_map do |contract|
-    #   scope.where(contract_uuid: contract.id).pluck(:name).uniq.map do |method_name|
-    #     {
-    #       name: "#{format_contract_name(contract.name)}##{method_name}",
-    #       data: scope.where(name: method_name).group_by_minute(:ext_created_at, n: 15).count
-    #     }
-    #   end
-    # end
-
-    @events_insights_per_contract = scope.joins(:contract).group('contracts.name, decoded_messages.name').group_by_minute(:ext_created_at, n: 15).count
-
-    @events_insights_per_category = scope.joins(:contract).group('contracts.category').group_by_minute(:ext_created_at, n: 15).count.transform_keys {|key| [Contract.categories.key(key.first).titleize, key.last] }
   end
 end

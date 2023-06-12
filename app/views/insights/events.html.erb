@@ -54,12 +54,12 @@
   <div class="px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
     <h1> Events insights per contract: </h1>
 
-    <%= line_chart @events_insights_per_contract %>
+    <%= line_chart events_insights_per_contract_insights_path(params.permit!) %>
   </div>
   <br />
   <div class="px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
     <h1> Events insights per category: </h1>
 
-    <%= line_chart @events_insights_per_category %>
+    <%= line_chart events_insights_per_category_insights_path(params.permit!) %>
   </div>
 </div>
