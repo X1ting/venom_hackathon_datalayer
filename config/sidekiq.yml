@@ -1,7 +1,7 @@
 ---
 :concurrency: 2
 production:
-  :concurrency: 5
+  :concurrency: 4
 :queues:
   - [transactions, 3]
   - [accounts, 3]
