@@ -3,6 +3,6 @@ module Everscale
     include BaseJobMixin
     sidekiq_options :queue => :decode_messages_everscale
 
-    sidekiq_throttle(concurrency: { limit: 1 })
+    sidekiq_throttle(concurrency: { limit: 3 })
   end
 end
