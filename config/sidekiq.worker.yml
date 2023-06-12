@@ -1,0 +1,7 @@
+---
+production:
+  :concurrency: 6
+:queues:
+  - [accounts, 3]
+  - [decode_messages_venom, 2]
+  - [decode_messages_everscale, 2]

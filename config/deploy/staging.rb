@@ -1,4 +1,5 @@
 server '65.21.59.170', user: 'deploy', roles: %w{app}
+set(:sidekiq_config, 'config/sidekiq.worker.yml')
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.

@@ -1,4 +1,5 @@
 server '65.108.54.50', user: 'deploy', roles: %w{app db web}
+set(:sidekiq_config, 'config/sidekiq.yml')
 # server 'datalayer.xiting.me', user: 'deploy', roles: %w{app db web}
 # server-based syntax
 # ======================
