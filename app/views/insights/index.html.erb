@@ -23,16 +23,16 @@
 <div class="px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
   <h1> Events insights: </h1>
 
-  <%= line_chart @events_insights %>
+  <%= line_chart events_main_insights_path(params.permit!) %>
 </div>
 <br />
 <div class="px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
   <h1> Transactions per blockchain: </h1>
-  <%= line_chart @transactions_insights %>
+  <%= line_chart transactions_insights_path(params.permit!) %>
 </div>
 <br />
 <div class="px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
   <h1> Accounts interactions: </h1>
 
-  <%= line_chart @accounts_insights %>
+  <%= line_chart accounts_insights_path(params.permit!) %>
 </div>

@@ -45,6 +45,43 @@ class InsightsController < ApplicationController
     render json: scope.joins(:contract).group('contracts.category').group_by_minute(:ext_created_at, n: 15).count.transform_keys {|key| [Contract.categories.key(key.first).titleize, key.last] }.chart_json
   end
 
+  def transactions
+    if params[:since].present?
+      @transactions = Transaction.where(time: Date.parse(params[:since])..)
+    end
+
+    if params[:until].present?
+      @transactions = Transaction.where(time: ..Date.parse(params[:until]))
+    end
+
+    render json: @transactions.group(:blockchain).group_by_minute(:time, n: 5).count.chart_json
+  end
+
+  def events_main
+    if params[:since].present?
+      @events = DecodedMessage.where(ext_created_at: Date.parse(params[:since])..)
+    end
+
+    if params[:until].present?
+      @events = DecodedMessage.where(ext_created_at: ..Date.parse(params[:until]))
+    end
+
+    render json: @events.group(:name).group_by_minute(:ext_created_at, n: 5).count.chart_json
+  end
+
+  def accounts
+
+    if params[:since].present?
+      @accounts = Account.where(created_at: Date.parse(params[:since])..)
+    end
+
+    if params[:until].present?
+      @accounts = Account.where(created_at: ..Date.parse(params[:until]))
+    end
+
+    render json: @accounts.group(:blockchain).group_by_minute(:created_at, n: 5).count.chart_json
+  end
+
   def search_params
     params.permit(:since, :until, :blockchain, :contract_uuid, :from, :to, :with_account, :name, :category)
   end
@@ -55,7 +92,7 @@ class InsightsController < ApplicationController
     if params[:since].present?
       scope = scope.where(ext_created_at: Date.parse(params[:since])..)
     else
-      scope = scope.where(ext_created_at: 3.hours.ago..)
+      scope = scope.where(ext_created_at: 1.day.ago..)
     end
 
     if params[:until].present?
