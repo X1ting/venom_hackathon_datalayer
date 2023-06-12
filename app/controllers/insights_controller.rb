@@ -127,5 +127,7 @@ class InsightsController < ApplicationController
       contract_uuids = Contract.where(category: params[:category]).select(:id)
       scope = scope.where(contract_uuid: contract_uuids)
     end
+
+    scope
   end
 end
