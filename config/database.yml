@@ -85,5 +85,6 @@ production:
   postgresql:
     <<: *default
     database: data_layer_production
-    # username: <%= Rails.application.credentials.postgresql.username %>
-    # password: <%= Rails.application.credentials.postgresql.password %>
+    host: <%= Rails.application.credentials.postgresql.host %>
+    username: <%= Rails.application.credentials.postgresql.username %>
+    password: <%= Rails.application.credentials.postgresql.password %>
