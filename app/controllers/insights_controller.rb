@@ -112,131 +112,19 @@ class InsightsController < ApplicationController
       scope = scope.where(contract_uuid: contract_uuids)
     end
 
-    contracts = Contract.where(id: scope.pluck(:contract_uuid))
+    contracts = Contract.where(id: scope.select(:contract_uuid).distinct)
 
-    @events_insights_per_contract = Rails.cache.fetch("/events#events_insights_per_contract?#{params}", expires_in: 20.minutes) do
-      contracts.select(:id, :name).flat_map do |contract|
-        scope.where(contract_uuid: contract.id).pluck(:name).uniq.map do |method_name|
-          {
-            name: "#{format_contract_name(contract.name)}##{method_name}",
-            data: scope.where(name: method_name).group_by_minute(:ext_created_at, n: 15).count
-          }
-        end
-      end
-    end
+    # @events_insights_per_contract = contracts.select(:id, :name).flat_map do |contract|
+    #   scope.where(contract_uuid: contract.id).pluck(:name).uniq.map do |method_name|
+    #     {
+    #       name: "#{format_contract_name(contract.name)}##{method_name}",
+    #       data: scope.where(name: method_name).group_by_minute(:ext_created_at, n: 15).count
+    #     }
+    #   end
+    # end
 
-    @events_insights_per_category = Rails.cache.fetch("/events#events_insights_per_category?#{params}", expires_in: 20.minutes) do
-       contracts.pluck(:category).uniq.map do |category|
-        {
-          name: category.titleize,
-          data: scope.where(contract_uuid: contracts.where(category: category).select(:id)).group_by_minute(:ext_created_at, n: 15).count
-        }
-      end
-    end
-  end
+    @events_insights_per_contract = scope.joins(:contract).group('contracts.name, decoded_messages.name').group_by_minute(:ext_created_at, n: 15).count
 
-  def events_per_category
-        scope = DecodedMessage.all
-
-    if params[:since].present?
-      scope = scope.where(ext_created_at: Date.parse(params[:since])..)
-    else
-      scope = scope.where(ext_created_at: 3.hours.ago..)
-    end
-
-    if params[:until].present?
-      scope = scope.where(ext_created_at: ..Date.parse(params[:until]))
-    end
-
-    if params[:blockchain].present?
-      scope = scope.where(blockchain: params[:blockchain])
-    end
-
-    if params[:contract_uuid].present?
-      scope = scope.where(contract_uuid: params[:contract_uuid])
-    end
-
-    if params[:from].present?
-      scope = scope.where(src: params[:from])
-    end
-
-    if params[:to].present?
-      scope = scope.where(src: params[:to])
-    end
-
-    if params[:with_account].present?
-      scope = scope.where(src: params[:with_account]).or(scope.where(dst: params[:with_account]))
-    end
-
-    if params[:name].present?
-      scope = scope.where(name: params[:name])
-    end
-
-    if params[:category].present?
-      contract_uuids = Contract.where(category: params[:category]).select(:id)
-      scope = scope.where(contract_uuid: contract_uuids)
-    end
-
-    contracts = Contract.where(id: scope.pluck(:contract_uuid))
-    render json: contracts.pluck(:category).uniq.map do |category|
-      {
-        name: category.titleize,
-        data: scope.where(contract_uuid: contracts.where(category: category).select(:id)).group_by_minute(:ext_created_at, n: 15).count
-      }
-    end.as_json
-  end
-
-  def events_per_contract
-    scope = DecodedMessage.all
-
-    if params[:since].present?
-      scope = scope.where(ext_created_at: Date.parse(params[:since])..)
-    else
-      scope = scope.where(ext_created_at: 3.hours.ago..)
-    end
-
-    if params[:until].present?
-      scope = scope.where(ext_created_at: ..Date.parse(params[:until]))
-    end
-
-    if params[:blockchain].present?
-      scope = scope.where(blockchain: params[:blockchain])
-    end
-
-    if params[:contract_uuid].present?
-      scope = scope.where(contract_uuid: params[:contract_uuid])
-    end
-
-    if params[:from].present?
-      scope = scope.where(src: params[:from])
-    end
-
-    if params[:to].present?
-      scope = scope.where(src: params[:to])
-    end
-
-    if params[:with_account].present?
-      scope = scope.where(src: params[:with_account]).or(scope.where(dst: params[:with_account]))
-    end
-
-    if params[:name].present?
-      scope = scope.where(name: params[:name])
-    end
-
-    if params[:category].present?
-      contract_uuids = Contract.where(category: params[:category]).select(:id)
-      scope = scope.where(contract_uuid: contract_uuids)
-    end
-
-    contracts = Contract.where(id: scope.pluck(:contract_uuid))
-    @events_insights_per_contract = contracts.select(:id, :name).flat_map do |contract|
-      scope.where(contract_uuid: contract.id).pluck(:name).uniq.map do |method_name|
-        {
-          name: "#{format_contract_name(contract.name)}##{method_name}",
-          data: scope.where(name: method_name).group_by_minute(:ext_created_at, n: 15).count
-        }
-      end
-    end
-
+    @events_insights_per_category = scope.joins(:contract).group('contracts.category').group_by_minute(:ext_created_at, n: 15).count.transform_keys {|key| [Contract.categories.key(key.first).titleize, key.last] }
   end
 end
