@@ -7,24 +7,6 @@ class InsightsController < ApplicationController
 
     redirect_to insights_path, notice: "Since date is invalid" and return unless valid_date?(params[:since])
     redirect_to insights_path, notice: "Until date is invalid" and return unless valid_date?(params[:until])
-
-    if params[:since].present?
-      @transactions = Transaction.where(time: Date.parse(params[:since])..)
-      @accounts = Account.where(created_at: Date.parse(params[:since])..)
-      @events = DecodedMessage.where(ext_created_at: Date.parse(params[:since])..)
-    end
-
-    if params[:until].present?
-      @transactions = Transaction.where(time: ..Date.parse(params[:until]))
-      @accounts = Account.where(created_at: ..Date.parse(params[:until]))
-      @events = DecodedMessage.where(ext_created_at: ..Date.parse(params[:until]))
-    end
-
-    @transactions_insights = @transactions.group(:blockchain).group_by_minute(:time, n: 5).count
-
-    @accounts_insights = @accounts.group(:blockchain).group_by_minute(:created_at, n: 5).count
-
-    @events_insights = @events.group(:name).group_by_minute(:ext_created_at, n: 5).count
   end
 
   def events
