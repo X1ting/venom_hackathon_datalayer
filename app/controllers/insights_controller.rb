@@ -28,37 +28,41 @@ class InsightsController < ApplicationController
   end
 
   def transactions
+    @transactions = Transaction.all
+
     if params[:since].present?
-      @transactions = Transaction.where(time: Date.parse(params[:since])..)
+      @transactions = @transactions.where(time: Date.parse(params[:since])..)
     end
 
     if params[:until].present?
-      @transactions = Transaction.where(time: ..Date.parse(params[:until]))
+      @transactions = @transactions.where(time: ..Date.parse(params[:until]))
     end
 
     render json: @transactions.group(:blockchain).group_by_minute(:time, n: 30).count.chart_json
   end
 
   def events_main
+    @events = DecodedMessage.all
+
     if params[:since].present?
-      @events = DecodedMessage.where(ext_created_at: Date.parse(params[:since])..)
+      @events = @events.where(ext_created_at: Date.parse(params[:since])..)
     end
 
     if params[:until].present?
-      @events = DecodedMessage.where(ext_created_at: ..Date.parse(params[:until]))
+      @events = @events.where(ext_created_at: ..Date.parse(params[:until]))
     end
 
     render json: @events.group(:name).group_by_minute(:ext_created_at, n: 30).count.chart_json
   end
 
   def accounts
-
+    @accounts = Account.all
     if params[:since].present?
-      @accounts = Account.where(created_at: Date.parse(params[:since])..)
+      @accounts = @accounts.where(created_at: Date.parse(params[:since])..)
     end
 
     if params[:until].present?
-      @accounts = Account.where(created_at: ..Date.parse(params[:until]))
+      @accounts = @accounts.where(created_at: ..Date.parse(params[:until]))
     end
 
     render json: @accounts.group(:blockchain).group_by_minute(:created_at, n: 30).count.chart_json
