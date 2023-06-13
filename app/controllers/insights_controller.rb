@@ -36,7 +36,7 @@ class InsightsController < ApplicationController
       @transactions = Transaction.where(time: ..Date.parse(params[:until]))
     end
 
-    render json: @transactions.group(:blockchain).group_by_minute(:time, n: 5).count.chart_json
+    render json: @transactions.group(:blockchain).group_by_minute(:time, n: 30).count.chart_json
   end
 
   def events_main
@@ -48,7 +48,7 @@ class InsightsController < ApplicationController
       @events = DecodedMessage.where(ext_created_at: ..Date.parse(params[:until]))
     end
 
-    render json: @events.group(:name).group_by_minute(:ext_created_at, n: 5).count.chart_json
+    render json: @events.group(:name).group_by_minute(:ext_created_at, n: 30).count.chart_json
   end
 
   def accounts
@@ -61,7 +61,7 @@ class InsightsController < ApplicationController
       @accounts = Account.where(created_at: ..Date.parse(params[:until]))
     end
 
-    render json: @accounts.group(:blockchain).group_by_minute(:created_at, n: 5).count.chart_json
+    render json: @accounts.group(:blockchain).group_by_minute(:created_at, n: 30).count.chart_json
   end
 
   def search_params

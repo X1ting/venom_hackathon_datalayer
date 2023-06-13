@@ -4,12 +4,10 @@ class DecodeMessagesJobBase < SidekiqJob
     contract_ids = options["contract_ids"]
     try_to_decode_all = options["try_to_decode_all"]
     message_ids = options["message_ids"]
-
+    contracts_scope = Contract.all
     if contract_ids
-      contracts_scope = contract_base.where(id: contract_ids)
-      contract_base.where(id: contract_ids).update_all(init_population_state: :in_progress)
-    else
-      contracts_scope = contract_base
+      contracts_scope = contracts_scope.where(id: contract_ids)
+      contracts_scope.where(id: contract_ids).update_all(init_population_state: :in_progress)
     end
 
     if try_to_decode_all
@@ -81,7 +79,7 @@ class DecodeMessagesJobBase < SidekiqJob
     end
 
     if contract_ids
-      contract_base.where(id: contract_ids).update_all(init_population_state: :done)
+      contracts_scope.where(id: contract_ids).update_all(init_population_state: :done)
     end
   end
 end
