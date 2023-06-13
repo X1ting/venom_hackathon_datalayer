@@ -6,7 +6,6 @@ production:
   - [transactions, 3]
   - [accounts, 3]
   - [messages, 3]
-  - [decode_messages_venom, 1]
 :scheduler:
   :schedule:
     schedule_latest_transactions:
