@@ -1,5 +1,5 @@
 class ScheduleLatestMessagesJob < ApplicationJob
-  BUFFER_TIME = 1.minutes
+  BUFFER_TIME = 1.minute
   queue_as :messages
 
   def perform

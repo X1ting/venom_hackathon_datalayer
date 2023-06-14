@@ -4,7 +4,7 @@ default: &default
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 8 } %>
+  pool: 20
 
 clickhouse_default: &clickhouse_default
   database: default
@@ -88,3 +88,5 @@ production:
     host: <%= Rails.application.credentials.postgresql.host %>
     username: <%= Rails.application.credentials.postgresql.username %>
     password: <%= Rails.application.credentials.postgresql.password %>
+    pool: 20
+    timeout: 15000

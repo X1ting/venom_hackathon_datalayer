@@ -14,10 +14,6 @@ set :keep_releases, 5
 
 set :branch, 'main'
 
-set(:sidekiq_config, 'config/sidekiq.yml')
-set(:sidekiq_concurrency, 1)
-set(:sidekiq_queue,%w(default high low))
-set(:sidekiq_processes, 1)
 set :rbenv_type, :user
 set :rbenv_ruby, '3.1.2'
 

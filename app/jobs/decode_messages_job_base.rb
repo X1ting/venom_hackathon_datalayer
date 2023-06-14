@@ -1,6 +1,9 @@
 class DecodeMessagesJobBase < SidekiqJob
 
   def perform(options)
+    Rails.logger.info('Start')
+    stats = ActiveRecord::Base.connection_pool.stat
+    Rails.logger.info("Connection pool stat: #{stats}")
     contract_ids = options["contract_ids"]
     try_to_decode_all = options["try_to_decode_all"]
     message_ids = options["message_ids"]
@@ -22,21 +25,25 @@ class DecodeMessagesJobBase < SidekiqJob
     end
 
     messages_count = messages_scope.count
-
+    Rails.logger.info('Scopes defined')
     return if messages_count.zero?
-
     offset = 0
     limit = 1000
     client = TonClient.create(config: { network: {endpoints: ["http://#{rpc_host}"]}})
+    Rails.logger.info('Client loaded')
     contracts_data = contracts_scope.pluck(:id, :abi)
+    Rails.logger.info("Contracts loaded, count: #{contracts_data.count}")
     while offset <= messages_count
-      results = []
-      messages = messages_scope.limit(limit).offset(offset).select(:id, :boc, :src, :dst, :created_at)
-      existing_messages_ids = DecodedMessage.where(ext_id: messages.map(&:id)).pluck(:ext_id)
+      to_insert = []
+      messages = messages_scope.limit(limit).offset(offset).select(:id, :boc, :src, :dst, :created_at).distinct
+      Rails.logger.info("Messages loaded, messsage count is: #{messages_count}")
 
-      puts "Messages loaded, messsage count is: #{messages_count}"
+      existing_messages_ids = DecodedMessage.where(ext_id: messages.map(&:id)).pluck(:ext_id).uniq
+      Rails.logger.info("Existing messages loaded, messsage count is: #{existing_messages_ids.count}")
+
       messages.each do |message|
         next if message.id.in?(existing_messages_ids)
+        Rails.logger.info("Processing #{message.id}")
 
         contracts_data.each do |(contract_id, abi)|
           payload = {
@@ -45,39 +52,35 @@ class DecodeMessagesJobBase < SidekiqJob
           }
           response = client.abi.decode_message_sync(payload)
           if response["result"]
-            results.push({
-              message: message,
-              contract_id: contract_id,
-              result: response["result"],
+            to_insert.push({
+              blockchain: blockchain,
+              network: network,
+              ext_id: message.id,
+              src: message.src,
+              dst: message.dst,
+              ext_created_at: message.created_at,
+              body_type: response["result"]["body_type"],
+              name: response["result"]["name"],
+              value: response["result"]["value"],
+              header: response["result"]["header"],
+              contract_uuid: contract_id,
             })
           end
         end
       end
-      results.each do |result|
-        begin
-          DecodedMessage.create(
-            blockchain: blockchain,
-            network: network,
-            ext_id: result[:message].id,
-            src: result[:message].src,
-            dst: result[:message].dst,
-            ext_created_at: result[:message].created_at,
-            body_type: result[:result]["body_type"],
-            name: result[:result]["name"],
-            value: result[:result]["value"],
-            header: result[:result]["header"],
-            contract_uuid: result[:contract_id],
-          )
-        rescue ActiveRecord::RecordNotUnique => e
-          puts e
-        end
-      end
 
-      addresses = results.map {|result| [result[:message].src, result[:message].dst]}.uniq.flatten.compact_blank
+      Rails.logger.info("All decoding, saving, #{to_insert.count}")
+
+      DecodedMessage.insert_all(to_insert) unless to_insert.empty?
+
+      Rails.logger.info("All saved, scheduling accounts")
+
+      addresses = to_insert.map {|result| [result[:src], result[:dst]]}.uniq.flatten.compact_blank
       process_account_job.perform_async(addresses)
       offset = offset + limit
     end
 
+    Rails.logger.info("Done")
     if contract_ids
       contracts_scope.where(id: contract_ids).update_all(init_population_state: :done)
     end
