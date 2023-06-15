@@ -28,6 +28,10 @@ module Api
           scope = scope.where('name ILIKE ?', "%#{params[:name]}%")
         end
 
+        if params[:value_key].present? && params[:value_value].present?
+          scope = scope.where("value ->> :key= :value", { key: params[:value_key], value: params[:value_value] })
+        end
+
         if params[:category].present?
           contract_uuids = Contract.where(category: params[:category].downcase).select(:id)
           scope = scope.where(contract_uuid: contract_uuids)

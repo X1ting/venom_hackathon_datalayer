@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_05_205119) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_13_100434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -26,6 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_05_205119) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["address"], name: "index_accounts_on_address"
+    t.index ["created_at"], name: "index_accounts_on_created_at"
   end
 
   create_table "contracts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -63,6 +64,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_05_205119) do
     t.uuid "contract_uuid"
     t.datetime "ext_created_at"
     t.index ["dst"], name: "index_decoded_messages_on_dst"
+    t.index ["ext_created_at"], name: "index_decoded_messages_on_ext_created_at"
     t.index ["ext_id", "blockchain", "network", "contract_uuid"], name: "uniq_per_blockchain_and_contract", unique: true
     t.index ["ext_id"], name: "index_decoded_messages_on_ext_id"
     t.index ["name"], name: "index_decoded_messages_on_name"
