@@ -74,14 +74,9 @@ paths:
         description: Account address
         schema:
           type: string
-      - name: value_key
+      - name: values_filter
         in: query
-        description: Filter by value key, use in pair with value_value
-        schema:
-          type: string
-      - name: value_value
-        in: query
-        description: Filter by value in value :), use in pair with value_key
+        description: Key value
         schema:
           type: string
       responses:

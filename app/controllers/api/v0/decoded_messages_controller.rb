@@ -2,6 +2,7 @@ module Api
   module V0
     class DecodedMessagesController < ApiController
       def index
+        puts 'PARAMS', params
         scope = DecodedMessage.all
 
         if params[:since].present?
@@ -28,8 +29,10 @@ module Api
           scope = scope.where('name ILIKE ?', "%#{params[:name]}%")
         end
 
-        if params[:value_key].present? && params[:value_value].present?
-          scope = scope.where("value ->> :key= :value", { key: params[:value_key], value: params[:value_value] })
+        if params[:values_filter].present? && !params[:values_filter].empty?
+          params[:values_filter].each do |(key, value)|
+            scope = scope.where("value ->> :key= :value", { key: key, value: value })
+          end
         end
 
         if params[:category].present?
